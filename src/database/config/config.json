@@ -1,0 +1,23 @@
+{
+  "development": {
+    "database": "hotelmanagement",
+    "password": "Aashutosh@123",
+    "host": "localhost",
+    "username": "root",
+    "dialect": "mysql"
+  },
+  "test": {
+    "database": "hotelmanagement",
+    "password": "Aashutosh@123",
+    "host": "localhost",
+    "username": "root",
+    "dialect": "mysql"
+  },
+  "production": {
+    "database": "hotelmanagement",
+    "password": "Aashutosh@123",
+    "host": "localhost",
+    "username": "root",
+    "dialect": "mysql"
+  }
+}

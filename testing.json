@@ -1,0 +1,71 @@
+[{
+    "userName": "john_doe",
+    "email": "john.doe@example.com",
+    "password": "securepassword123",
+    "firstName": "John",
+    "lastName": "Doe",
+    "phoneNumber": "+1234567890",
+    "address": "123 Elm Street",
+    "city": "Springfield",
+    "state": "IL",
+    "zipCode": "62701",
+    "roleId": 1,
+    "outletId": 1,
+    "isActive": true
+},
+{
+    "name": "The Caza Bar",
+    "address": "123 Ocean Drive",
+    "city": "Miami",
+    "state": "FL",
+    "zipCode": "33101",
+    "phoneNumber": "+1-305-555-1234",
+    "email": "info@caza.com",
+    "rating": 4.5,
+    "isActive": true,
+    "hotelid" : 1,
+    "website": "https://www.caza.com"
+  },
+  {
+    "userWisePermission": [
+      {
+        "userId": 4,
+        "pageId": 1,
+        "canView": true,
+        "canEdit": false,
+        "canDelete": true,
+        "createdAt": "2024-09-16T12:15:48.000Z",
+        "updatedAt": "2024-09-16T12:15:48.000Z"
+      }
+    ],
+    "pageData": [
+      {
+        "pageId": 1,
+        "moduleId": 1,
+        "pageName": "/dashboard",
+        "pageUrl": "Dashboard",
+        "createdAt": "2024-09-15T13:06:06.000Z",
+        "updatedAt": "2024-09-15T13:06:06.000Z"
+      }
+    ],
+    "moduleData": [
+      {
+        "moduleId": 1,
+        "moduleTypeId": 1,
+        "moduleName": "Dashboard",
+        "createdAt": "2024-09-15T13:04:24.000Z",
+        "updatedAt": "2024-09-15T13:04:24.000Z"
+      }
+    ],
+    "moduleTypeData": [
+      {
+        "moduleTypeId": 1,
+        "moduleTypeName": "Dashboard",
+        "createdAt": "2024-09-15T13:01:58.000Z",
+        "updatedAt": "2024-09-15T13:01:58.000Z"
+      }
+    ]
+    
+  },
+  {"github token" : "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"}
+]
