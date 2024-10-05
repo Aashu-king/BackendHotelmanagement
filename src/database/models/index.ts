@@ -8,6 +8,15 @@ import UserPermission from "./user-permission.model";
 import Module from "./module.model";
 import ModuleType from "./module-type.model";
 import Page from "./page.model";
+import BillDetail from "./billdetail.model";
+import Bill from "./bills.model";
+import CheckIn from "./checkin.model";
+import CheckOut from "./checkout.model";
+import { Reservation } from "./reservation.model";
+import { Room } from "./room.model";
+import { RoomRate } from "./roomRate.model";
+import { RoomType } from "./roomType.model";
+import { Guest } from "./guest.model";
 
 const sequelize = new Sequelize({
   database : 'hotelmanagement',
@@ -15,7 +24,7 @@ const sequelize = new Sequelize({
   host : 'localhost',
   username : 'root',
   dialect : 'mysql',
-  models : [Hotel,Outlet,Role,User,RolePermission,UserPermission,Module,ModuleType,Page]
+  models : [Hotel,Outlet,Role,User,RolePermission,UserPermission,Module,ModuleType,Page,BillDetail,Bill,CheckIn,CheckOut,Reservation,Room,RoomRate,RoomType,Guest]
 })
 
 export default sequelize
