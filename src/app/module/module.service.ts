@@ -7,40 +7,166 @@ import UserPermission from "../../database/models/user-permission.model";
 import User from "../../database/models/user.model";
 
 class moduleService{
-    async CreateModuleType(moduleTypeName : any){
+    async CreateModuleType(moduleTypeName: string) {
         try {
-            const createdMOduleType = await ModuleType.create({
-                moduleTypeName : moduleTypeName
-            })
-            return createdMOduleType;
+            const createdModuleType = await ModuleType.create({ moduleTypeName });
+            return createdModuleType;
         } catch (error) {
-            console.log("🚀 ~ moduleService ~ CreateModuleType ~ error:", error)
-            
-        }
-    }
-    async CreateModule(moduleName : any,moduleTypeId : any){
-        try {
-            const createdMOduleType = await Module.create({
-                moduleName : moduleName,
-                moduleTypeId : moduleTypeId
-            })
-            return createdMOduleType;
-        } catch (error) {
-            console.log("🚀 ~ moduleService ~ CreateModuleType ~ error:", error)
+            console.error("🚀 ~ ModuleService ~ CreateModuleType ~ error:", error);
+            throw new Error('Failed to create module type');
         }
     }
 
-    async CreatePage(moduleId,pageName,pageUrl){
+    async UpdateModuleType(id: any, moduleTypeName: string) {
         try {
-            const createdMOduleType = await Page.create({
-                moduleId : moduleId,
-                pageName : pageName,
-                pageUrl : pageUrl
-            })
-            return createdMOduleType;
+            const moduleType = await ModuleType.findByPk(id);
+            if (moduleType) {
+                moduleType.moduleTypeName = moduleTypeName;
+                await moduleType.save();
+                return moduleType;
+            }
+            return null;
         } catch (error) {
-            console.log("🚀 ~ moduleService ~ CreatePage ~ error:", error)
-            
+            console.error("🚀 ~ ModuleService ~ UpdateModuleType ~ error:", error);
+            throw new Error('Failed to update module type');
+        }
+    }
+
+    async DeleteModuleType(id: any) {
+        try {
+            const moduleType = await ModuleType.findByPk(id);
+            if (moduleType) {
+                await moduleType.destroy();
+                return true;
+            }
+            return false;
+        } catch (error) {
+            console.error("🚀 ~ ModuleService ~ DeleteModuleType ~ error:", error);
+            throw new Error('Failed to delete module type');
+        }
+    }
+
+    async GetModuleTypeById(id: any) {
+        try {
+            const moduleType = await ModuleType.findByPk(id);
+            return moduleType;
+        } catch (error) {
+            console.error("🚀 ~ ModuleService ~ GetModuleTypeById ~ error:", error);
+            throw new Error('Failed to retrieve module type');
+        }
+    }
+    
+    async CreateModule(moduleName: string, moduleTypeId: any) {
+        try {
+            const createdModule = await Module.create({
+                moduleName: moduleName,
+                moduleTypeId: moduleTypeId
+            });
+            return createdModule;
+        } catch (error) {
+            console.error("🚀 ~ moduleService ~ CreateModule ~ error:", error);
+            throw new Error('Failed to create module');
+        }
+    }
+
+    // Update Module
+    async UpdateModule(id: any, moduleName: string, moduleTypeId: any) {
+        try {
+            const module = await Module.findByPk(id);
+            if (module) {
+                module.moduleName = moduleName;
+                module.moduleTypeId = moduleTypeId;
+                await module.save();
+                return module;
+            }
+            return null;
+        } catch (error) {
+            console.error("🚀 ~ moduleService ~ UpdateModule ~ error:", error);
+            throw new Error('Failed to update module');
+        }
+    }
+
+    // Delete Module
+    async DeleteModule(id: any) {
+        try {
+            const module = await Module.findByPk(id);
+            if (module) {
+                await module.destroy();
+                return true;
+            }
+            return false;
+        } catch (error) {
+            console.error("🚀 ~ moduleService ~ DeleteModule ~ error:", error);
+            throw new Error('Failed to delete module');
+        }
+    }
+
+    // Get Module by ID
+    async GetModuleById(id: any) {
+        try {
+            const module = await Module.findByPk(id);
+            return module;
+        } catch (error) {
+            console.error("🚀 ~ moduleService ~ GetModuleById ~ error:", error);
+            throw new Error('Failed to retrieve module');
+        }
+    }
+
+    async CreatePage(moduleId: any, pageName: string, pageUrl: string) {
+        try {
+            const createdPage = await Page.create({
+                moduleId: moduleId,
+                pageName: pageName,
+                pageUrl: pageUrl
+            });
+            return createdPage;
+        } catch (error) {
+            console.error("🚀 ~ pageService ~ CreatePage ~ error:", error);
+            throw new Error('Failed to create page');
+        }
+    }
+
+    // Update Page
+    async UpdatePage(id: any, moduleId: any, pageName: string, pageUrl: string) {
+        try {
+            const page = await Page.findByPk(id);
+            if (page) {
+                page.moduleId = moduleId;
+                page.pageName = pageName;
+                page.pageUrl = pageUrl;
+                await page.save();
+                return page;
+            }
+            return null;
+        } catch (error) {
+            console.error("🚀 ~ pageService ~ UpdatePage ~ error:", error);
+            throw new Error('Failed to update page');
+        }
+    }
+
+    // Delete Page
+    async DeletePage(id: any) {
+        try {
+            const page = await Page.findByPk(id);
+            if (page) {
+                await page.destroy();
+                return true;
+            }
+            return false;
+        } catch (error) {
+            console.error("🚀 ~ pageService ~ DeletePage ~ error:", error);
+            throw new Error('Failed to delete page');
+        }
+    }
+
+    // Get Page by ID
+    async GetPageById(id: any) {
+        try {
+            const page = await Page.findByPk(id);
+            return page;
+        } catch (error) {
+            console.error("🚀 ~ pageService ~ GetPageById ~ error:", error);
+            throw new Error('Failed to retrieve page');
         }
     }
 
@@ -182,9 +308,11 @@ class moduleService{
         }
       }
 
-    async getUserPermission(user){
+    async getUserPermission(){
         try {
-            const gotData = await UserPermission.findAll()
+            const gotData = await UserPermission.findAll({
+                include: [{model : User , attributes : ['userId','userName']}, {model : Page , attributes : ['pageId','pageName']}],
+              })
             return gotData
         } catch (error) {
             console.log("🚀 ~ moduleService ~ getRolePermission ~ error:", error)

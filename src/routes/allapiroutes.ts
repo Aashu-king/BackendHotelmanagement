@@ -28,15 +28,31 @@ router.get('/getUser',userController.getusers)
 router.get('/getRole',userController.getroles)
 
 //module related
-router.post('/moduletype',moduleController.CreateModuleType)
-router.post('/module',moduleController.CreateModule)
-router.get('/get-page',moduleController.getPage)
-router.get('/get-module',moduleController.getModule)
+//for module part 
+router.post('/moduletype', moduleController.CreateModuleType);
+router.put('/module-type/:id', moduleController.UpdateModuleType);
+router.delete('/module-type/:id', moduleController.DeleteModuleType);
+router.get('/module-type/:id', moduleController.GetModuleTypeById);
 router.get('/get-moduletype',moduleController.getModuleType)
-router.post('/page',moduleController.CreatePage)
+
+router.post('/module', moduleController.CreateModule);
+router.put('/module/:id', moduleController.UpdateModule);
+router.delete('/module/:id', moduleController.DeleteModule);
+router.get('/module/:id', moduleController.GetModuleById);
+router.get('/get-module',moduleController.getModule)
+
+
+router.post('/page', moduleController.CreatePage);
+router.put('/page/:id', moduleController.UpdatePage);
+router.delete('/page/:id', moduleController.DeletePage);
+router.get('/page/:id', moduleController.GetPageById);
+router.get('/get-page',moduleController.getPage)
+
+//in module permission related
 router.post('/rolewisePermission',moduleController.CreateRolePagePerm)
 router.post('/userwisePermission',moduleController.CreateUserPagePerm)
 router.get('/getPerm',passport.authenticate('jwt', { session: false }),moduleController.permissionWiseData)
+
 router.get('/userperm',moduleController.userpermissionData)
 router.get('/roleperm',moduleController.rolepermissionData)
 
@@ -76,6 +92,7 @@ router.get('/dropdown-hotels', dropdownController.hotelDropdown);
 router.get('/dropdown-outlets', dropdownController.outletDropdown);
 router.get('/dropdown-guests', dropdownController.guestDropdown);
 router.get('/dropdown-modules', dropdownController.moduleDropdown);
+router.get('/dropdown-moduleType', dropdownController.moduleTypeDropdown);
 router.get('/dropdown-pages', dropdownController.pageDropdown);
 router.get('/dropdown-reservations', dropdownController.reservationDropdown);
 // router.get('/role-permissions', dropdownController.rolePermissionDropdown);
@@ -85,6 +102,9 @@ router.get('/dropdown-room-rates', dropdownController.roomRateDropdown);
 router.get('/dropdown-users', dropdownController.userDropdown); 
 router.get('/dropdown-roles', dropdownController.roleDropdown); 
 // router.get('/user-permissions', dropdownController.userPermissionDropdown);
+
+
+
 
 
 

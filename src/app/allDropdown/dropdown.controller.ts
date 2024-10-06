@@ -11,6 +11,7 @@ import {RoomType} from "../../database/models/roomType.model";
 import {RoomRate} from "../../database/models/roomRate.model";
 import User from "../../database/models/user.model";
 import Role from "../../database/models/role.model";
+import ModuleType from "../../database/models/module-type.model";
 
 class DropDown {
     async hotelDropdown(req: Request, res: Response) {
@@ -46,6 +47,16 @@ class DropDown {
     async moduleDropdown(req: Request, res: Response) {
         try {
             const moduleData = await Module.findAll({ attributes: ['moduleId', 'moduleName'] });
+            res.status(200).json(moduleData);
+        } catch (error) {
+            console.error("🚀 ~ DropDown ~ moduleDropdown ~ error:", error);
+            res.status(500).json({ message: "Internal Server Error" });
+        }
+    }
+
+    async moduleTypeDropdown(req: Request, res: Response) {
+        try {
+            const moduleData = await ModuleType.findAll({ attributes: ['moduleTypeId', 'moduleTypeName'] });
             res.status(200).json(moduleData);
         } catch (error) {
             console.error("🚀 ~ DropDown ~ moduleDropdown ~ error:", error);

@@ -4,6 +4,7 @@ import bcrypt from 'bcrypt';
 import passport from "./../../authentication/passportLogin";
 import Role from "../../database/models/role.model";
 import jwt from 'jsonwebtoken';
+import UserPermission from "../../database/models/user-permission.model";
 
 interface DecodedRequest extends Request {
     decoded?: any; // Define a custom interface for requests with decoded JWT
@@ -129,6 +130,23 @@ class userController{
             
         }
     }
+    // async createRoomRate(req: Request, res: Response) {
+    //     try {
+    //         const createdRoomRate = await UserPermission.findAll();
+    //         return res.status(201).json({
+    //             success: true,
+    //             message: 'user Permission found successfully',
+    //             data: createdRoomRate,
+    //         });
+    //     } catch (error) {
+    //         console.log("🚀 ~  ~ error:", error);
+    //         return res.status(500).json({
+    //             success: false,
+    //             message: 'Failed to find user perm',
+    //             error: error.message,
+    //         });
+    //     }
+    // }
 }
 
 export default new userController();
