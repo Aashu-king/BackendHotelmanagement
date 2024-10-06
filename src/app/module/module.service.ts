@@ -76,7 +76,8 @@ class moduleService{
     }
     async GotPermissionData(user){
         try {
-            const userWisePermission = await UserPermission.findAll({where : {userId : user.userId,canView : true}})
+            const userWisePermission = await UserPermission.findAll({where : {userId : user.userId,canView : true},include : [Page]})
+            console.log("🚀 ~ moduleService ~ GotPermissionData ~ userWisePermission:", userWisePermission)
             if(userWisePermission.length == 0){
                 const userDetails = await User.findByPk(user.userId)
                 const getRoleWisePermission = await RolePermission.findAll({where : {roleId : userDetails.roleId}})
@@ -113,15 +114,7 @@ class moduleService{
                     };
                 })
                 const finalObj = {
-                    userWisePermission: userWisePermission.map((permission) => ({
-                        userId: permission.userId,
-                        pageId: permission.pageId,
-                        canView: permission.canView,
-                        canEdit: permission.canEdit,
-                        canDelete: permission.canDelete,
-                        createdAt: permission.createdAt,
-                        updatedAt: permission.updatedAt
-                    })),
+                    Permissions: userWisePermission,
                     moduleTypeData: fileterdModule
                 };
                 return finalObj
@@ -158,15 +151,7 @@ class moduleService{
                 };
             })
             const finalObj = {
-                userWisePermission: userWisePermission.map((permission) => ({
-                    userId: permission.userId,
-                    pageId: permission.pageId,
-                    canView: permission.canView,
-                    canEdit: permission.canEdit,
-                    canDelete: permission.canDelete,
-                    createdAt: permission.createdAt,
-                    updatedAt: permission.updatedAt
-                })),
+                Permissions: userWisePermission,
                 moduleTypeData: fileterdModule
             };
             return finalObj

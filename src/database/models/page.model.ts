@@ -1,6 +1,7 @@
 import { Table, Column, Model, DataType, PrimaryKey, AutoIncrement, ForeignKey, HasMany } from 'sequelize-typescript';
 import Module from './module.model'; 
 import RolePermission from './role-permission.model';
+import UserPermission from './user-permission.model';
 
 @Table({
   tableName: 'pages',
@@ -36,6 +37,9 @@ class Page extends Model {
 
   @HasMany(() => RolePermission)
   rolePermissions!: RolePermission[];
+
+  @HasMany(() => UserPermission)
+  userPermissions!: UserPermission[];
 }
 
 export default Page;
