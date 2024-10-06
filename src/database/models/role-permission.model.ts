@@ -1,4 +1,4 @@
-import { Table, Column, Model, DataType, PrimaryKey, ForeignKey } from 'sequelize-typescript';
+import { Table, Column, Model, DataType, PrimaryKey, ForeignKey, BelongsTo } from 'sequelize-typescript';
 import Role from './role.model';
 import Page from './page.model'; 
 
@@ -40,6 +40,12 @@ class RolePermission extends Model {
     defaultValue: false,
   })
   canDelete!: boolean;
+
+  @BelongsTo(() => Role)
+  role!: Role;
+
+  @BelongsTo(() => Page)
+  page!: Page;
 }
 
 export default RolePermission;

@@ -61,7 +61,7 @@ class userService{
     }
     async getusers(){
         try {
-            const gotUserdetails = await User.findAll({attributes : ['userId','userName']})
+            const gotUserdetails = await User.findAll({attributes : ['userId','userName'],include : [Role]})
             return gotUserdetails;
         } catch (error) {
             console.log("🚀 ~ userService ~ createuser ~ error:", error)

@@ -24,7 +24,7 @@ const sequelize = new Sequelize({
   host : 'localhost',
   username : 'root',
   dialect : 'mysql',
-  models : [Hotel,Outlet,Role,User,RolePermission,UserPermission,Module,ModuleType,Page,BillDetail,Bill,CheckIn,CheckOut,Reservation,Room,RoomRate,RoomType,Guest]
+  models : [Hotel,Outlet,User,RolePermission,UserPermission,Module,ModuleType,BillDetail,Bill,CheckIn,CheckOut,Reservation,Room,RoomRate,RoomType,Guest,Page,Role]
 })
 
 export default sequelize

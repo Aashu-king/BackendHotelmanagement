@@ -59,9 +59,7 @@ class moduleController{
     }
     async permissionWiseData(req : Request,res : Response){
         try {
-            console.log("🚀 ~ moduleController ~ permissionWiseData ~ req:", req)
             const user = (req as DecodedRequest).user
-            console.log("🚀 ~ moduleController ~ permissionWiseData ~ userId:", user)
             const gotPermissionData = await moduleService.GotPermissionData(user)
             res.status(200).json(gotPermissionData)
         } catch (error) {
@@ -69,6 +67,49 @@ class moduleController{
             
         }
     }
+
+    async userpermissionData(req : Request,res : Response){
+        try {
+            console.log("🚀 ~ moduleController ~ permissionWiseData ~ req:", req)
+            const user = (req as DecodedRequest).user
+            console.log("🚀 ~ moduleController ~ permissionWiseData ~ userId:", user)
+            const gotPermissionData = await moduleService.getUserPermission(user)
+            res.status(200).json(gotPermissionData)
+        } catch (error) {
+            console.log("🚀 ~ moduleController ~ permissionWiseData ~ error:", error)
+            
+        }
+    }
+
+    async rolepermissionData(req: Request, res: Response) {
+        try {
+      
+         
+          const permissions = await moduleService.getRolePermission();
+      
+          res.status(200).json({
+            success: true,
+            data: permissions,
+          });
+      
+        } catch (error) {
+          console.error("🚀 ~ moduleController ~ rolePermissionData ~ error:", error.message || error);
+      
+          if (error.message === 'Failed to retrieve role permissions.') {
+            return res.status(500).json({
+              success: false,
+              message: 'An error occurred while fetching role permissions. Please try again later.',
+            });
+          }
+      
+          // For unexpected errors
+          res.status(500).json({
+            success: false,
+            message: 'An unexpected error occurred. Please try again later.',
+          });
+        }
+      }
+      
 
     async getModule(req : Request,res : Response){
         try {

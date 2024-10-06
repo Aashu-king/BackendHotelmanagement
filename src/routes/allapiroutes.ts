@@ -37,6 +37,9 @@ router.post('/page',moduleController.CreatePage)
 router.post('/rolewisePermission',moduleController.CreateRolePagePerm)
 router.post('/userwisePermission',moduleController.CreateUserPagePerm)
 router.get('/getPerm',passport.authenticate('jwt', { session: false }),moduleController.permissionWiseData)
+router.get('/userperm',moduleController.userpermissionData)
+router.get('/roleperm',moduleController.rolepermissionData)
+
 
 //room related
 router.post('/createRoom',RoomController.createRoomType)

@@ -2,6 +2,7 @@ import ModuleType from "../../database/models/module-type.model"
 import Module from "../../database/models/module.model";
 import Page from "../../database/models/page.model";
 import RolePermission from "../../database/models/role-permission.model";
+import Role from "../../database/models/role.model";
 import UserPermission from "../../database/models/user-permission.model";
 import User from "../../database/models/user.model";
 
@@ -172,6 +173,36 @@ class moduleService{
             }
         } catch (error) {
             console.log("🚀 ~ moduleService ~ GotPermissionData ~ error:", error)
+            
+        }
+    }
+
+    async getRolePermission() {
+        try {
+          const permissions = await RolePermission.findAll({
+            include: [Role, Page],
+          });
+      
+          if (!permissions || permissions.length === 0) {
+            throw new Error('No permissions found for this role.');
+          }
+      
+          console.log("🚀 ~ moduleService ~ getRolePermission ~ permissions:", permissions);
+          return permissions;
+      
+        } catch (error) {
+          console.error("🚀 ~ moduleService ~ getRolePermission ~ error:", error.message || error);
+     
+          throw new Error('Failed to retrieve role permissions.');
+        }
+      }
+
+    async getUserPermission(user){
+        try {
+            const gotData = await UserPermission.findAll()
+            return gotData
+        } catch (error) {
+            console.log("🚀 ~ moduleService ~ getRolePermission ~ error:", error)
             
         }
     }
