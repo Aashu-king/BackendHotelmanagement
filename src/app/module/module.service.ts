@@ -1,3 +1,4 @@
+import { where } from "sequelize";
 import ModuleType from "../../database/models/module-type.model"
 import Module from "../../database/models/module.model";
 import Page from "../../database/models/page.model";
@@ -70,9 +71,10 @@ class moduleService{
     }
 
     // Update Module
-    async UpdateModule(id: any, moduleName: string, moduleTypeId: any) {
+    async UpdateModule(moduleId: any, moduleName: string, moduleTypeId: any) {
         try {
-            const module = await Module.findByPk(id);
+            const module = await Module.findByPk(moduleId);
+            console.log("🚀 ~ moduleService ~ UpdateModule ~ module:", module)
             if (module) {
                 module.moduleName = moduleName;
                 module.moduleTypeId = moduleTypeId;
@@ -102,9 +104,9 @@ class moduleService{
     }
 
     // Get Module by ID
-    async GetModuleById(id: any) {
+    async GetModuleById(moduleId: any) {
         try {
-            const module = await Module.findByPk(id);
+            const module = await Module.findByPk(moduleId);
             return module;
         } catch (error) {
             console.error("🚀 ~ moduleService ~ GetModuleById ~ error:", error);
@@ -200,6 +202,53 @@ class moduleService{
             
         }
     }
+
+    async updateUserPermission(userId: any, pageId: any,  canView,canEdit,canDelete) {
+        try {
+            const module = await UserPermission.findOne({ where: { pageId : pageId,userId : userId } });
+            console.log("🚀 ~ moduleService ~ UpdateModule ~ module:", module)
+            if (module) {
+                module.canView = canView;
+                module.canEdit = canEdit;
+                module.canDelete = canDelete;
+                await module.save();
+                return module;
+            }
+            return null;
+        } catch (error) {
+            console.log("🚀 ~ moduleService ~ updateUserPermission ~ error:", error);
+            throw new Error("Failed to update user permission");
+        }
+    }
+
+    async deleteUserPermission(pageId: any,userId : any) {
+        try {
+            const deletedRows = await UserPermission.destroy({ where: { pageId : pageId,userId : userId } });
+            return deletedRows > 0;
+        } catch (error) {
+            console.log("🚀 ~ moduleService ~ deleteUserPermission ~ error:", error);
+            throw new Error("Failed to delete user permission");
+        }
+    }
+
+    async getUserPermissionById(pageId: any,userId : any) {
+        try {
+            const userPermission = await UserPermission.findOne({
+            where: { pageId :  pageId ,userId: userId},
+                include: [
+                    { model: User, attributes: ['userId', 'userName'] },
+                    { model: Page, attributes: ['pageId', 'pageName'] }
+                ]
+            });
+            console.log("🚀 ~ moduleService ~ getUserPermissionById ~ userPermission:", userPermission)
+            return userPermission;
+        } catch (error) {
+            console.log("🚀 ~ moduleService ~ getUserPermissionById ~ error:", error);
+            throw new Error("Failed to retrieve user permission");
+        }
+    }
+    
+
     async GotPermissionData(user){
         try {
             const userWisePermission = await UserPermission.findAll({where : {userId : user.userId,canView : true},include : [Page]})

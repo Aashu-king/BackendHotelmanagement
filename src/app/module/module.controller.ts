@@ -252,6 +252,51 @@ class moduleController{
             
         }
     }
+
+    async updateUserPermission(req: Request, res: Response) {
+        try {
+            const {pageId,userId,canView,canEdit,canDelete} = req.body
+            console.log("🚀 ~ moduleController ~ updateUserPermission ~ req.body:", req.body)
+            const updatedPermission = await moduleService.updateUserPermission(userId, pageId, canView,canEdit,canDelete);
+            if (!updatedPermission) {
+                return res.status(404).json({ message: "User permission not found" });
+            }
+            res.status(200).json(updatedPermission);
+        } catch (error) {
+            console.log("🚀 ~ moduleController ~ updateUserPermission ~ error:", error);
+            res.status(500).json({ message: "Failed to update user permission", error });
+        }
+    }
+
+    async deleteUserPermission(req: Request, res: Response) {
+        try {
+            const { pageId,userId } = req.query;
+            const deleted = await moduleService.deleteUserPermission(pageId,userId);
+            if (!deleted) {
+                return res.status(404).json({ message: "User permission not found" });
+            }
+            res.status(200).json({ message: "User permission deleted successfully" });
+        } catch (error) {
+            console.log("🚀 ~ moduleController ~ deleteUserPermission ~ error:", error);
+            res.status(500).json({ message: "Failed to delete user permission", error });
+        }
+    }
+
+    async getUserPermissionById(req: Request, res: Response) {
+        try {
+            const { pageId , userId } = req.query;
+            const permissionData = await moduleService.getUserPermissionById(pageId , userId);
+            if (!permissionData) {
+                return res.status(404).json({ message: "User permission not found" });
+            }
+            res.status(200).json(permissionData);
+        } catch (error) {
+            console.log("🚀 ~ moduleController ~ getUserPermissionById ~ error:", error);
+            res.status(500).json({ message: "Failed to retrieve user permission", error });
+        }
+    }
+    
+    
     async permissionWiseData(req : Request,res : Response){
         try {
             const user = (req as DecodedRequest).user

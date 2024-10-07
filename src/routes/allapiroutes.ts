@@ -50,7 +50,12 @@ router.get('/get-page',moduleController.getPage)
 
 //in module permission related
 router.post('/rolewisePermission',moduleController.CreateRolePagePerm)
+
 router.post('/userwisePermission',moduleController.CreateUserPagePerm)
+router.put('/upuserpermission', moduleController.updateUserPermission);
+router.delete('/user-permission', moduleController.deleteUserPermission);
+router.get('/user-permission', moduleController.getUserPermissionById);
+
 router.get('/getPerm',passport.authenticate('jwt', { session: false }),moduleController.permissionWiseData)
 
 router.get('/userperm',moduleController.userpermissionData)
