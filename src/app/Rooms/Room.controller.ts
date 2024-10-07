@@ -3,7 +3,7 @@ import RoomService from "./Room.service";
 
 interface DecodedRequest extends Request {
     decoded?: any; 
-}
+  }
 
 class RoomController {
     async createRoomType(req: Request, res: Response) {
@@ -15,6 +15,63 @@ class RoomController {
             console.log("🚀 ~ RoomController ~ createRoom ~ error:", error);
         }
     }
+
+    async updateRoomType(req: Request, res: Response) {
+        try {
+            const {roomTypeId} = req.params;
+            const roomData = req.body;
+            const updatedRoomData = await RoomService.updateRoomType(roomTypeId, roomData);
+            if (updatedRoomData) {
+                res.status(200).json({ message: 'Room type updated successfully', data: updatedRoomData });
+            } else {
+                res.status(404).json({ message: 'Room type not found' });
+            }
+        } catch (error) {
+            console.log("🚀 ~ RoomController ~ updateRoomType ~ error:", error);
+            res.status(500).json({ message: 'Internal server error', error });
+        }
+    }
+
+    async getRoomTypeById(req: Request, res: Response) {
+        try {
+            const {roomTypeId} = req.params;
+            const roomType = await RoomService.getRoomTypeById(roomTypeId);
+            if (roomType) {
+                res.status(200).json(roomType);
+            } else {
+                res.status(404).json({ message: 'Room type not found' });
+            }
+        } catch (error) {
+            console.log("🚀 ~ RoomController ~ getRoomTypeById ~ error:", error);
+            res.status(500).json({ message: 'Internal server error', error });
+        }
+    }
+
+    async getAllRoomTypes(req: Request, res: Response) {
+        try {
+            const roomTypes = await RoomService.getAllRoomTypes();
+            res.status(200).json(roomTypes);
+        } catch (error) {
+            console.log("🚀 ~ RoomController ~ getAllRoomTypes ~ error:", error);
+            res.status(500).json({ message: 'Internal server error', error });
+        }
+    }
+
+    async deleteRoomType(req: Request, res: Response) {
+        try {
+            const {roomTypeId} = req.params;
+            const deletedRoomType = await RoomService.deleteRoomType(roomTypeId);
+            if (deletedRoomType) {
+                res.status(200).json({ message: 'Room type deleted successfully' });
+            } else {
+                res.status(404).json({ message: 'Room type not found' });
+            }
+        } catch (error) {
+            console.log("🚀 ~ RoomController ~ deleteRoomType ~ error:", error);
+            res.status(500).json({ message: 'Internal server error', error });
+        }
+    }
+    
 
     async createRoom(req: Request, res: Response) {
         try {
@@ -34,6 +91,53 @@ class RoomController {
             });
         }
     }
+
+    
+
+    async getRoomById(req: Request, res: Response) {
+        try {
+            const roomId = req.params.id;
+            const room = await RoomService.getRoomById(roomId);
+            if (room) {
+                return res.status(200).json({
+                    success: true,
+                    data: room,
+                });
+            } else {
+                return res.status(404).json({
+                    success: false,
+                    message: 'Room not found',
+                });
+            }
+        } catch (error) {
+            console.log("🚀 ~ RoomController ~ getRoomById ~ error:", error);
+            return res.status(500).json({
+                success: false,
+                message: 'Failed to retrieve room',
+                error: error.message,
+            });
+        }
+    }
+
+    async getAllRooms(req: Request, res: Response) {
+        try {
+            const rooms = await RoomService.getAllRooms();
+            return res.status(200).json({
+                success: true,
+                data: rooms,
+            });
+        } catch (error) {
+            console.log("🚀 ~ RoomController ~ getAllRooms ~ error:", error);
+            return res.status(500).json({
+                success: false,
+                message: 'Failed to retrieve rooms',
+                error: error.message,
+            });
+        }
+    }
+
+
+        
 
     async createRoomRate(req: Request, res: Response) {
         try {
@@ -94,8 +198,8 @@ class RoomController {
 
     async getRoomDetails(req: Request, res: Response) {
         try {
-            const { outletid } = req.params;
-            const rooms = await RoomService.getRoomDetails({ outletid });
+            const userDe = (req as DecodedRequest).user
+            const rooms = await RoomService.getRoomDetails(userDe);
             return res.status(200).json({
                 success: true,
                 data: rooms,

@@ -152,6 +152,22 @@ import CheckOut from '../../database/models/checkout.model';
             throw new Error('Failed to delete bill');
         }
     }
+
+     async getAllBillDetails() {
+        return BillDetail.findAll(); 
+    }
+
+     async getAllCheckIns() {
+        return CheckIn.findAll(); 
+    }
+
+     async getAllCheckOuts() {
+        return CheckOut.findAll(); 
+    }
+
+     async getAllBills() {
+        return Bill.findAll(); 
+    }
 }
 
 export default new BillDetailService()

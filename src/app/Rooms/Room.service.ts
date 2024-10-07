@@ -1,4 +1,5 @@
 import { Guest } from "../../database/models/guest.model";
+import { Outlet } from "../../database/models/outlet.model";
 import { Reservation } from "../../database/models/reservation.model";
 import { Room } from "../../database/models/room.model";
 import { RoomRate } from "../../database/models/roomRate.model";
@@ -21,6 +22,61 @@ class RoomService {
         }
     }
 
+    async updateRoomType(roomTypeId: string, data: any) {
+        try {
+            const roomType = await RoomType.findByPk(roomTypeId);
+            if (!roomType) {
+                return null;
+            }
+            const updatedRoomType = await roomType.update({
+                typeName: data.typeName,
+                description: data.description,
+                baseRate: data.baseRate,
+                maxOccupancy: data.maxOccupancy,
+                amenities: data.amenities,
+                outletid: data.outletid
+            });
+            return updatedRoomType;
+        } catch (error) {
+            console.log("🚀 ~ RoomService ~ updateRoomType ~ error:", error);
+            throw new Error('Failed to update room type');
+        }
+    }
+
+    async getRoomTypeById(roomTypeId: string) {
+        try {
+            const roomType = await RoomType.findByPk(roomTypeId);
+            return roomType;
+        } catch (error) {
+            console.log("🚀 ~ RoomService ~ getRoomTypeById ~ error:", error);
+            throw new Error('Failed to get room type');
+        }
+    }
+
+    async getAllRoomTypes() {
+        try {
+            const roomTypes = await RoomType.findAll({include : {model : Outlet,attributes : ['outletId','name']}});
+            return roomTypes;
+        } catch (error) {
+            console.log("🚀 ~ RoomService ~ getAllRoomTypes ~ error:", error);
+            throw new Error('Failed to get all room types');
+        }
+    }
+
+    async deleteRoomType(roomTypeId: string) {
+        try {
+            const roomType = await RoomType.findByPk(roomTypeId);
+            if (!roomType) {
+                return null;
+            }
+            await roomType.destroy();
+            return true;
+        } catch (error) {
+            console.log("🚀 ~ RoomService ~ deleteRoomType ~ error:", error);
+            throw new Error('Failed to delete room type');
+        }
+    }
+
     async createRoom(data) {
         try {
             const createdRoomData = await Room.create({
@@ -36,6 +92,29 @@ class RoomService {
             throw error;  
         }
     }
+
+    async getRoomById(roomId: string) {
+        try {
+            const room = await Room.findByPk(roomId);
+            return room;
+        } catch (error) {
+            console.log("🚀 ~ RoomService ~ getRoomById ~ error:", error);
+            throw new Error('Failed to retrieve room');
+        }
+    }
+
+    async getAllRooms() {
+        try {
+            const rooms = await Room.findAll();
+            return rooms;
+        } catch (error) {
+            console.log("🚀 ~ RoomService ~ getAllRooms ~ error:", error);
+            throw new Error('Failed to retrieve rooms');
+        }
+    }
+    
+    
+    
 
     async createRoomRate(data) {
         try {
@@ -94,9 +173,9 @@ class RoomService {
         }
     }
     
-    async getRoomDetails(data) {
+    async getRoomDetails(user) {
         try {
-            const rooms = await Room.findAll({ where: { outletid: data.outletid } });
+            const rooms = await Room.findAll({ where: { outletid: user.outletId } ,include : [{model : Outlet,attributes : ['outletId','name']},{model : Room,attributes : ['roomTypeId','typeName']}]});
             return rooms;
         } catch (error) {
             console.log("🚀 ~ RoomService ~ getRoomDetails ~ error:", error);

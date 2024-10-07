@@ -175,6 +175,49 @@ import  BillDetailService  from './booking.serbice';
             return res.status(500).json({ success: false, message: 'Failed to delete bill', error: error.message });
         }
     }
+
+    async getAllBillDetails(req: Request, res: Response) {
+        try {
+            const billDetails = await BillDetailService.getAllBillDetails();
+            return res.status(200).json({ success: true, data: billDetails });
+        } catch (error) {
+            console.log("🚀 ~ BillDetailController ~ getAllBillDetails ~ error:", error);
+            return res.status(500).json({ success: false, message: 'Failed to fetch bill details', error: error.message });
+        }
+    }
+
+    // Get all Check-ins
+    async getAllCheckIns(req: Request, res: Response) {
+        try {
+            const checkIns = await BillDetailService.getAllCheckIns();
+            return res.status(200).json({ success: true, data: checkIns });
+        } catch (error) {
+            console.log("🚀 ~ BillDetailController ~ getAllCheckIns ~ error:", error);
+            return res.status(500).json({ success: false, message: 'Failed to fetch check-ins', error: error.message });
+        }
+    }
+
+    // Get all Check-outs
+    async getAllCheckOuts(req: Request, res: Response) {
+        try {
+            const checkOuts = await BillDetailService.getAllCheckOuts();
+            return res.status(200).json({ success: true, data: checkOuts });
+        } catch (error) {
+            console.log("🚀 ~ BillDetailController ~ getAllCheckOuts ~ error:", error);
+            return res.status(500).json({ success: false, message: 'Failed to fetch check-outs', error: error.message });
+        }
+    }
+
+    // Get all Bills
+    async getAllBills(req: Request, res: Response) {
+        try {
+            const bills = await BillDetailService.getAllBills();
+            return res.status(200).json({ success: true, data: bills });
+        } catch (error) {
+            console.log("🚀 ~ BillDetailController ~ getAllBills ~ error:", error);
+            return res.status(500).json({ success: false, message: 'Failed to fetch bills', error: error.message });
+        }
+    }
 }
 
 

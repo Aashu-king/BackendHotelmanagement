@@ -1,5 +1,6 @@
-import { Table, Column, Model, DataType, ForeignKey } from 'sequelize-typescript';
+import { Table, Column, Model, DataType, ForeignKey, BelongsTo, HasMany } from 'sequelize-typescript';
 import { Outlet } from './outlet.model';
+import { Room } from './room.model';
 
 @Table({
   tableName: 'RoomTypes',
@@ -49,4 +50,10 @@ export class RoomType extends Model {
     allowNull: false,
   })
   outletid!: number;
+
+  @BelongsTo(() => Outlet)
+  outlet!: Outlet;
+
+  @HasMany(() => Room)
+  room !: Room
 }

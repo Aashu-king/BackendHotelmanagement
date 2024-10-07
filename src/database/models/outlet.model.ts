@@ -1,5 +1,7 @@
-import { Table, Column, Model, DataType, ForeignKey, BelongsTo, AutoIncrement, PrimaryKey } from 'sequelize-typescript';
+import { Table, Column, Model, DataType, ForeignKey, BelongsTo, AutoIncrement, PrimaryKey, HasMany } from 'sequelize-typescript';
 import  Hotel  from './hotel.model';
+import { RoomType } from './roomType.model';
+import { Room } from './room.model';
 
 @Table({
   tableName: 'outlets',
@@ -66,4 +68,10 @@ export class Outlet extends Model {
 
   @BelongsTo(() => Hotel)
   hotel!: Hotel;
+
+  @HasMany(() => RoomType)
+  roomType!: RoomType[]; 
+
+  @HasMany(() => Room)
+  room!: Room[];
 }

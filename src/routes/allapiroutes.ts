@@ -6,6 +6,7 @@ import passport from "./../authentication/authmiddleware";
 import moduleController from "../app/module/module.controller";
 import RoomController from "../app/Rooms/Room.controller";
 import dropdownController from "../app/allDropdown/dropdown.controller";
+import bookingController from "../app/booking/booking.controller";
 
 const router = express.Router();
 
@@ -63,15 +64,25 @@ router.get('/roleperm',moduleController.rolepermissionData)
 
 
 //room related
-router.post('/createRoom',RoomController.createRoomType)
+
+router.post('/room-type', RoomController.createRoomType);
+
+router.put('/room-type/:roomTypeId', RoomController.updateRoomType);
+
+router.get('/room-type/:roomTypeId', RoomController.getRoomTypeById);
+
+router.get('/room-types', RoomController.getAllRoomTypes);
+
+router.delete('/room-type/:roomTypeId', RoomController.deleteRoomType);
 
 
 // Room Types
-router.post('/roomType', RoomController.createRoomType);
+// router.post('/roomType', RoomController.createRoomType);
 
 // Rooms
 router.post('/room', RoomController.createRoom);
-router.get('/rooms/:outletid', RoomController.getRoomDetails);
+router.get('/rooms',passport.authenticate('jwt', { session: false }), RoomController.getRoomDetails);
+router.get('/rooms/:roomId', RoomController.getRoomById);
 router.put('/room/:roomId', RoomController.updateRoom);
 router.delete('/room/:roomId', RoomController.deleteRoom);
 
@@ -108,7 +119,26 @@ router.get('/dropdown-users', dropdownController.userDropdown);
 router.get('/dropdown-roles', dropdownController.roleDropdown); 
 // router.get('/user-permissions', dropdownController.userPermissionDropdown);
 
+router.post('/bill-detail', bookingController.createBillDetail);
+router.put('/bill-detail/:billDetailId', bookingController.updateBillDetail);
+router.delete('/bill-detail/:billDetailId', bookingController.deleteBillDetail);
+router.get('/bill-detail/:billDetailId', bookingController.getBillDetailById);
+router.get('/bill-details', bookingController.getAllBillDetails);
 
+router.post('/check-in', bookingController.createCheckIn);
+router.put('/check-in/:checkInId', bookingController.updateCheckIn);
+router.delete('/check-in/:checkInId', bookingController.deleteCheckIn);
+router.get('/check-ins', bookingController.getAllCheckIns);
+
+router.post('/check-out', bookingController.createCheckOut);
+router.put('/check-out/:checkOutId', bookingController.updateCheckOut);
+router.delete('/check-out/:checkOutId', bookingController.deleteCheckOut);
+router.get('/check-outs', bookingController.getAllCheckOuts);
+
+router.post('/bill', bookingController.createBill);
+router.put('/bill/:billId', bookingController.updateBill);
+router.delete('/bill/:billId', bookingController.deleteBill);
+router.get('/bills', bookingController.getAllBills);
 
 
 

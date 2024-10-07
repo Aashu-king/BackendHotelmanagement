@@ -1,4 +1,4 @@
-import { Table, Column, Model, DataType, ForeignKey } from 'sequelize-typescript';
+import { Table, Column, Model, DataType, ForeignKey, BelongsTo } from 'sequelize-typescript';
 import { RoomType } from './roomType.model';
 import { Outlet } from './outlet.model';
 
@@ -45,4 +45,9 @@ export class Room extends Model {
     allowNull: false,
   })
   outletid!: number;
+
+  @BelongsTo(() => Outlet)
+  outlet!: Outlet;
+  @BelongsTo(() => RoomType)
+  roomType!: RoomType;
 }
