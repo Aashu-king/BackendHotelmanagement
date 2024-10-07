@@ -234,11 +234,47 @@ class RoomController {
 
     async getGuestDetails(req: Request, res: Response) {
         try {
-            const { outletid } = req.params;
-            const guests = await RoomService.getGuestDetails({ outletid });
+            const userDe = (req as DecodedRequest).user
+            const guests = await RoomService.getGuestDetails(userDe);
             return res.status(200).json({
                 success: true,
                 data: guests,
+            });
+        } catch (error) {
+            console.log("🚀 ~ GuestController ~ getGuestDetails ~ error:", error);
+            return res.status(500).json({
+                success: false,
+                message: 'Failed to retrieve guest details',
+                error: error.message,
+            });
+        }
+    }
+
+    async getGuestById(req: Request, res: Response) {
+        try {
+            const {guestId} = req.params
+            const guests = await RoomService.getGuestDetails(guestId);
+            return res.status(200).json({
+                success: true,
+                data: guests,
+            });
+        } catch (error) {
+            console.log("🚀 ~ GuestController ~ getGuestDetails ~ error:", error);
+            return res.status(500).json({
+                success: false,
+                message: 'Failed to retrieve guest details',
+                error: error.message,
+            });
+        }
+    }
+
+    async reservationById(req: Request, res: Response) {
+        try {
+            const {reservationId} = req.params
+            const reservations = await RoomService.reservationById(reservationId);
+            return res.status(200).json({
+                success: true,
+                data: reservations,
             });
         } catch (error) {
             console.log("🚀 ~ GuestController ~ getGuestDetails ~ error:", error);
