@@ -94,15 +94,17 @@ router.delete('/roomRate/:rateId', RoomController.deleteRoomRate);
 
 // Guests
 router.post('/guest', RoomController.createGuest);
-router.get('/guests/:outletid', RoomController.getGuestDetails);
+router.get('/guests/:outletid',passport.authenticate('jwt', { session: false }), RoomController.getGuestDetails);
 router.put('/guest/:guestId', RoomController.updateGuest);
 router.delete('/guest/:guestId', RoomController.deleteGuest);
+router.get('/guest/:guestId', RoomController.getGuestById);
 
 // Reservations
 router.post('/reservation', RoomController.createReservation);
 router.get('/reservations/:outletid', RoomController.getReservations);
 router.put('/reservation/:reservationId', RoomController.updateReservation);
 router.delete('/reservation/:reservationId', RoomController.deleteReservation);
+router.get('/reservation/:reservationId', RoomController.reservationById);
 
 router.get('/dropdown-hotels', dropdownController.hotelDropdown);
 router.get('/dropdown-outlets', dropdownController.outletDropdown);

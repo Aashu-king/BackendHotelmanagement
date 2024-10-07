@@ -193,9 +193,29 @@ class RoomService {
         }
     }
 
-    async getGuestDetails(data) {
+    async getGuestDetails(user) {
         try {
-            const guests = await Guest.findAll({ where: { outletid: data.outletid } });
+            const guests = await Guest.findAll({ where: { outletid: user.outletId } });
+            return guests;
+        } catch (error) {
+            console.log("🚀 ~ GuestService ~ getGuestDetails ~ error:", error);
+            throw new Error('Failed to fetch guest details');
+        }
+    }
+
+    async getGuestById(guestId) {
+        try {
+            const guests = await Guest.findByPk(guestId);
+            return guests;
+        } catch (error) {
+            console.log("🚀 ~ GuestService ~ getGuestDetails ~ error:", error);
+            throw new Error('Failed to fetch guest details');
+        }
+    }
+
+    async reservationById(reservationId) {
+        try {
+            const guests = await Guest.findByPk(reservationId);
             return guests;
         } catch (error) {
             console.log("🚀 ~ GuestService ~ getGuestDetails ~ error:", error);
