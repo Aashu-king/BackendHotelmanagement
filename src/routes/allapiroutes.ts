@@ -13,13 +13,17 @@ const router = express.Router();
 //hotel
 router.post('/hotels',hotelController.createHotel)
 router.get('/get-hotel',hotelController.getHotels)
-
+router.get('/hotel/:id', hotelController.getHotelById);
+router.delete('/hotel/:id', hotelController.deleteHotel);
+router.put('/hotel/:id', hotelController.updateHotel);
 
 
 //outlet
 router.post('/outlet',outletController.createoutlet)
 router.get('/get-outlet',outletController.getoutlets)
-
+router.get('/outlet/:id', outletController.getoutletById);
+router.delete('/outlet/:id', outletController.deleteoutlet);
+router.put('/outlet/:id', outletController.updateoutlet);
 
 //userrelated
 router.post('/role',userController.createRole)
@@ -27,6 +31,9 @@ router.post('/user',userController.createUser)
 router.post('/login',userController.loginUser)
 router.get('/getUser',userController.getusers)
 router.get('/getRole',userController.getroles)
+router.get('/user/:id', userController.getuserById);
+router.put('/user/:id', userController.updateuser);
+
 
 //module related
 //for module part 
