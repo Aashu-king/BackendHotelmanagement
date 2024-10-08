@@ -31,6 +31,7 @@ const sequelize = new Sequelize({
   host : 'localhost',
   username : 'root',
   dialect : 'mysql',
+   timezone: '+00:00',
   models : [Hotel,Outlet,User,RolePermission,UserPermission,Module,ModuleType,BillDetail,Bill,CheckIn,CheckOut,Reservation,Room,RoomRate,RoomType,Guest,Page,Role,Inventory,Shift,Staff,Suppliers,SuppliesOrders,Supplies,ReservationTime]
 })
 

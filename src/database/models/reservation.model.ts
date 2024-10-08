@@ -79,8 +79,11 @@ export class Reservation extends Model {
   })
   outletid!: number;
 
-  @HasMany(() => ReservationTime)
-  reservation!: ReservationTime[];
+  @BelongsTo(() => Room)
+  room!: Room;
+
+  @BelongsTo(() => Guest)
+  guest!: Guest;
 
   @BelongsTo(() => Outlet)
   outlet !: Outlet

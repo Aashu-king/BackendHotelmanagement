@@ -74,7 +74,6 @@ class moduleService{
     async UpdateModule(moduleId: any, moduleName: string, moduleTypeId: any) {
         try {
             const module = await Module.findByPk(moduleId);
-            console.log("🚀 ~ moduleService ~ UpdateModule ~ module:", module)
             if (module) {
                 module.moduleName = moduleName;
                 module.moduleTypeId = moduleTypeId;
@@ -206,7 +205,6 @@ class moduleService{
     async updateUserPermission(userId: any, pageId: any,  canView,canEdit,canDelete) {
         try {
             const module = await UserPermission.findOne({ where: { pageId : pageId,userId : userId } });
-            console.log("🚀 ~ moduleService ~ UpdateModule ~ module:", module)
             if (module) {
                 module.canView = canView;
                 module.canEdit = canEdit;
@@ -240,7 +238,6 @@ class moduleService{
                     { model: Page, attributes: ['pageId', 'pageName'] }
                 ]
             });
-            console.log("🚀 ~ moduleService ~ getUserPermissionById ~ userPermission:", userPermission)
             return userPermission;
         } catch (error) {
             console.log("🚀 ~ moduleService ~ getUserPermissionById ~ error:", error);
@@ -252,7 +249,6 @@ class moduleService{
     async GotPermissionData(user){
         try {
             const userWisePermission = await UserPermission.findAll({where : {userId : user.userId,canView : true},include : [Page]})
-            console.log("🚀 ~ moduleService ~ GotPermissionData ~ userWisePermission:", userWisePermission)
             if(userWisePermission.length == 0){
                 const userDetails = await User.findByPk(user.userId)
                 const getRoleWisePermission = await RolePermission.findAll({where : {roleId : userDetails.roleId}})
@@ -347,7 +343,6 @@ class moduleService{
             throw new Error('No permissions found for this role.');
           }
       
-          console.log("🚀 ~ moduleService ~ getRolePermission ~ permissions:", permissions);
           return permissions;
       
         } catch (error) {
