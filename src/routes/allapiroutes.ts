@@ -7,6 +7,7 @@ import moduleController from "../app/module/module.controller";
 import RoomController from "../app/Rooms/Room.controller";
 import dropdownController from "../app/allDropdown/dropdown.controller";
 import bookingController from "../app/booking/booking.controller";
+import dashboardController from "../app/dashboardSpecial/dashboard.controller";
 
 const router = express.Router();
 
@@ -146,6 +147,10 @@ router.delete('/bill/:billId', bookingController.deleteBill);
 router.get('/bill/:billId', bookingController.getBillDetailById);
 router.get('/bills', bookingController.getAllBills);
 
+
+
+//Dashboard
+router.get('/theDate',passport.authenticate('jwt', { session: false }), dashboardController.RoomAvailable);
 
 
 

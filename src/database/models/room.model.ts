@@ -1,6 +1,7 @@
-import { Table, Column, Model, DataType, ForeignKey, BelongsTo } from 'sequelize-typescript';
+import { Table, Column, Model, DataType, ForeignKey, BelongsTo, HasMany } from 'sequelize-typescript';
 import { RoomType } from './roomType.model';
 import { Outlet } from './outlet.model';
+import { Reservation } from './reservation.model';
 
 @Table({
   tableName: 'Rooms',
@@ -46,8 +47,12 @@ export class Room extends Model {
   })
   outletid!: number;
 
+  @HasMany(() => Reservation)
+  reservation !: Reservation[];
+
   @BelongsTo(() => Outlet)
   outlet!: Outlet;
+  
   @BelongsTo(() => RoomType)
   roomType!: RoomType;
 }
