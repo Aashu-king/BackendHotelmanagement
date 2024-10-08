@@ -1,5 +1,6 @@
-import { Table, Column, Model, DataType, ForeignKey } from 'sequelize-typescript';
+import { Table, Column, Model, DataType, ForeignKey, HasMany } from 'sequelize-typescript';
 import { Outlet } from './outlet.model';
+import Bill from './bills.model';
 
 @Table({
   tableName: 'Guests',
@@ -68,4 +69,7 @@ export class Guest extends Model {
     allowNull: false,
   })
   outletid!: number;
+
+  @HasMany(() => Bill)
+  bill!: Bill[];
 }

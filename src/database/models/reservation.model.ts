@@ -1,7 +1,9 @@
-import { Table, Column, Model, DataType, ForeignKey } from 'sequelize-typescript';
+import { Table, Column, Model, DataType, ForeignKey, HasMany, BelongsTo } from 'sequelize-typescript';
 import { Guest } from './guest.model';
 import { Room } from './room.model'
 import { Outlet } from './outlet.model';
+import User from './user.model';
+import { ReservationTime } from './reservationTime.model';
 @Table({
   tableName: 'Reservations',
   timestamps: true,
@@ -76,4 +78,10 @@ export class Reservation extends Model {
     allowNull: false,
   })
   outletid!: number;
+
+  @HasMany(() => ReservationTime)
+  reservation!: ReservationTime[];
+
+  @BelongsTo(() => Outlet)
+  outlet !: Outlet
 }

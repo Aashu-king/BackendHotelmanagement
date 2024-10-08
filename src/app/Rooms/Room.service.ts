@@ -175,7 +175,7 @@ class RoomService {
     
     async getRoomDetails(user) {
         try {
-            const rooms = await Room.findAll({ where: { outletid: user.outletId } ,include : [{model : Outlet,attributes : ['outletId','name']},{model : Room,attributes : ['roomTypeId','typeName']}]});
+            const rooms = await Room.findAll({ where: { outletid: user.outletId } ,include : [{model : Outlet,attributes : ['outletId','name']},{model : RoomType,attributes : ['roomTypeId','typeName']}]});
             return rooms;
         } catch (error) {
             console.log("🚀 ~ RoomService ~ getRoomDetails ~ error:", error);
@@ -185,7 +185,7 @@ class RoomService {
 
     async getRoomRates(data) {
         try {
-            const roomRates = await RoomRate.findAll({ where: { outletid: data.outletid } });
+            const roomRates = await RoomRate.findAll({ where: { outletid: data.outletId } });
             return roomRates;
         } catch (error) {
             console.log("🚀 ~ RoomRateService ~ getRoomRates ~ error:", error);
@@ -215,7 +215,17 @@ class RoomService {
 
     async reservationById(reservationId) {
         try {
-            const guests = await Guest.findByPk(reservationId);
+            const guests = await Reservation.findByPk(reservationId);
+            return guests;
+        } catch (error) {
+            console.log("🚀 ~ GuestService ~ getGuestDetails ~ error:", error);
+            throw new Error('Failed to fetch guest details');
+        }
+    }
+
+    async ratesById(rateId) {
+        try {
+            const guests = await RoomRate.findByPk(rateId);
             return guests;
         } catch (error) {
             console.log("🚀 ~ GuestService ~ getGuestDetails ~ error:", error);
@@ -225,7 +235,7 @@ class RoomService {
 
     async getReservations(data) {
         try {
-            const reservations = await Reservation.findAll({ where: { outletid: data.outletid } });
+            const reservations = await Reservation.findAll({ where: { outletid: data.outletId } });
             return reservations;
         } catch (error) {
             console.log("🚀 ~ ReservationService ~ getReservations ~ error:", error);
@@ -260,7 +270,8 @@ class RoomService {
         try {
             const roomRate = await RoomRate.findByPk(rateId);
             if (!roomRate) return null;
-            return await roomRate.update(roomRateData);
+            const updatedContent =  await roomRate.update(roomRateData);
+            return updatedContent
         } catch (error) {
             console.log("🚀 ~ RoomRateService ~ updateRoomRate ~ error:", error);
             throw new Error('Failed to update room rate');

@@ -1,4 +1,4 @@
-import { Table, Column, Model, ForeignKey, DataType, HasMany } from 'sequelize-typescript';
+import { Table, Column, Model, ForeignKey, DataType, HasMany, BelongsTo } from 'sequelize-typescript';
 import {Guest} from './guest.model';
 import BillDetail from './billdetail.model';
 import { Outlet } from './outlet.model';
@@ -49,4 +49,10 @@ export default class Bill extends Model {
 
   @HasMany(() => BillDetail)
   billDetails!: BillDetail[];
+
+  @BelongsTo(() => Guest)
+  guest !: Guest
+
+  @BelongsTo(() => Outlet)
+  outlet !: Outlet
 }

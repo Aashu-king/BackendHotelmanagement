@@ -2,6 +2,9 @@ import { Table, Column, Model, DataType, ForeignKey, BelongsTo, AutoIncrement, P
 import  Hotel  from './hotel.model';
 import { RoomType } from './roomType.model';
 import { Room } from './room.model';
+import BillDetail from './billdetail.model';
+import Bill from './bills.model';
+import { Reservation } from './reservation.model';
 
 @Table({
   tableName: 'outlets',
@@ -74,4 +77,13 @@ export class Outlet extends Model {
 
   @HasMany(() => Room)
   room!: Room[];
+
+  @HasMany(() => BillDetail)
+  billDetails!: BillDetail[];
+
+  @HasMany(() => Bill)
+  bill!: Bill[];
+
+  @HasMany(() => Reservation)
+  reservation!: Reservation[];
 }

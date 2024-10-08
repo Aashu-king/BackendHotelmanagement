@@ -1,4 +1,4 @@
-import { Table, Column, Model, ForeignKey, DataType } from 'sequelize-typescript';
+import { Table, Column, Model, ForeignKey, DataType, BelongsTo } from 'sequelize-typescript';
 import Bill from './bills.model';
 import { Outlet } from './outlet.model';
 
@@ -38,4 +38,10 @@ export default class BillDetail extends Model {
     allowNull: false,
   })
   outletid!: number;
+
+  @BelongsTo(() => Bill)
+  bill !: Bill
+
+  @BelongsTo(() => Outlet)
+  outlet !: Outlet
 }

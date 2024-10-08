@@ -96,7 +96,7 @@ class RoomController {
 
     async getRoomById(req: Request, res: Response) {
         try {
-            const roomId = req.params.id;
+            const {roomId} = req.params;
             const room = await RoomService.getRoomById(roomId);
             if (room) {
                 return res.status(200).json({
@@ -216,8 +216,8 @@ class RoomController {
 
     async getRoomRates(req: Request, res: Response) {
         try {
-            const { outletid } = req.params;
-            const roomRates = await RoomService.getRoomRates({ outletid });
+            const userDe = (req as DecodedRequest).user
+            const roomRates = await RoomService.getRoomRates(userDe);
             return res.status(200).json({
                 success: true,
                 data: roomRates,
@@ -253,7 +253,7 @@ class RoomController {
     async getGuestById(req: Request, res: Response) {
         try {
             const {guestId} = req.params
-            const guests = await RoomService.getGuestDetails(guestId);
+            const guests = await RoomService.getGuestById(guestId);
             return res.status(200).json({
                 success: true,
                 data: guests,
@@ -286,10 +286,29 @@ class RoomController {
         }
     }
 
+
+    async ratesById(req: Request, res: Response) {
+        try {
+            const {rateId} = req.params
+            const resrateservations = await RoomService.ratesById(rateId);
+            return res.status(200).json({
+                success: true,
+                data: resrateservations,
+            });
+        } catch (error) {
+            console.log("🚀 ~ GuestController ~ getGuestDetails ~ error:", error);
+            return res.status(500).json({
+                success: false,
+                message: 'Failed to retrieve guest details',
+                error: error.message,
+            });
+        }
+    }
+
     async getReservations(req: Request, res: Response) {
         try {
-            const { outletid } = req.params;
-            const reservations = await RoomService.getReservations({ outletid });
+            const userDe = (req as DecodedRequest).user
+            const reservations = await RoomService.getReservations(userDe);
             return res.status(200).json({
                 success: true,
                 data: reservations,
@@ -306,7 +325,7 @@ class RoomController {
 
     async updateRoom(req: Request, res: Response) {
         try {
-            const roomId = req.params.roomId;
+            const {roomId} = req.params;
             const roomData = req.body;
             const updatedRoom = await RoomService.updateRoom(roomId, roomData);
             if (!updatedRoom) {
@@ -335,7 +354,7 @@ class RoomController {
 
     async updateRoomRate(req: Request, res: Response) {
         try {
-            const rateId = req.params.rateId;
+            const {rateId} = req.params;
             const roomRateData = req.body;
             const updatedRoomRate = await RoomService.updateRoomRate(rateId, roomRateData);
             if (!updatedRoomRate) {
@@ -364,7 +383,7 @@ class RoomController {
 
     async updateGuest(req: Request, res: Response) {
         try {
-            const guestId = req.params.guestId;
+            const {guestId} = req.params;
             const guestData = req.body;
             const updatedGuest = await RoomService.updateGuest(guestId, guestData);
             if (!updatedGuest) {
@@ -393,7 +412,7 @@ class RoomController {
 
     async updateReservation(req: Request, res: Response) {
         try {
-            const reservationId = req.params.reservationId;
+            const {reservationId} = req.params;
             const reservationData = req.body;
             const updatedReservation = await RoomService.updateReservation(reservationId, reservationData);
             if (!updatedReservation) {
@@ -408,7 +427,7 @@ class RoomController {
 
     async deleteReservation(req: Request, res: Response) {
         try {
-            const reservationId = req.params.reservationId;
+            const {reservationId} = req.params;
             const deleted = await RoomService.deleteReservation(reservationId);
             if (!deleted) {
                 return res.status(404).json({ success: false, message: 'Reservation not found' });

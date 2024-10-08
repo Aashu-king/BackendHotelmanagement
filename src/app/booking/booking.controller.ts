@@ -15,7 +15,7 @@ import  BillDetailService  from './booking.serbice';
 
     async updateBillDetail(req: Request, res: Response) {
         try {
-            const billDetailId = req.params.billDetailId;
+            const {billDetailId} = req.params;
             const billDetailData = req.body;
             const updatedBillDetail = await BillDetailService.updateBillDetail(billDetailId, billDetailData);
             if (!updatedBillDetail) {
@@ -30,7 +30,7 @@ import  BillDetailService  from './booking.serbice';
 
     async deleteBillDetail(req: Request, res: Response) {
         try {
-            const billDetailId = req.params.billDetailId;
+            const {billDetailId} = req.params;
             const deleted = await BillDetailService.deleteBillDetail(billDetailId);
             if (!deleted) {
                 return res.status(404).json({ success: false, message: 'Bill detail not found' });
@@ -44,7 +44,7 @@ import  BillDetailService  from './booking.serbice';
 
     async getBillDetailById(req: Request, res: Response) {
         try {
-            const billDetailId = req.params.billDetailId;
+            const {billDetailId} = req.params;
             const billDetail = await BillDetailService.getBillDetailById(billDetailId);
             if (!billDetail) {
                 return res.status(404).json({ success: false, message: 'Bill detail not found' });
@@ -69,7 +69,7 @@ import  BillDetailService  from './booking.serbice';
 
     async updateCheckIn(req: Request, res: Response) {
         try {
-            const checkInId = req.params.checkInId;
+            const {checkInId} = req.params;
             const checkInData = req.body;
             const updatedCheckIn = await BillDetailService.updateCheckIn(checkInId, checkInData);
             if (!updatedCheckIn) {
@@ -84,7 +84,7 @@ import  BillDetailService  from './booking.serbice';
 
     async deleteCheckIn(req: Request, res: Response) {
         try {
-            const checkInId = req.params.checkInId;
+            const {checkInId} = req.params;
             const deleted = await BillDetailService.deleteCheckIn(checkInId);
             if (!deleted) {
                 return res.status(404).json({ success: false, message: 'Check-in not found' });
@@ -149,7 +149,7 @@ import  BillDetailService  from './booking.serbice';
 
     async updateBill(req: Request, res: Response) {
         try {
-            const billId = req.params.billId;
+            const {billId} = req.params;
             const billData = req.body;
             const updatedBill = await BillDetailService.updateBill(billId, billData);
             if (!updatedBill) {
@@ -190,6 +190,28 @@ import  BillDetailService  from './booking.serbice';
     async getAllCheckIns(req: Request, res: Response) {
         try {
             const checkIns = await BillDetailService.getAllCheckIns();
+            return res.status(200).json({ success: true, data: checkIns });
+        } catch (error) {
+            console.log("🚀 ~ BillDetailController ~ getAllCheckIns ~ error:", error);
+            return res.status(500).json({ success: false, message: 'Failed to fetch check-ins', error: error.message });
+        }
+    }
+
+    async getByIdCheckIn(req: Request, res: Response) {
+        try {
+            const {checkOutId} = req.params;
+            const checkIns = await BillDetailService.getByIdCheckIn(checkOutId);
+            return res.status(200).json({ success: true, data: checkIns });
+        } catch (error) {
+            console.log("🚀 ~ BillDetailController ~ getAllCheckIns ~ error:", error);
+            return res.status(500).json({ success: false, message: 'Failed to fetch check-ins', error: error.message });
+        }
+    }
+
+    async getByIdCheckOuts(req: Request, res: Response) {
+        try {
+            const {checkInId} = req.params;
+            const checkIns = await BillDetailService.getByIdCheckOuts(checkInId);
             return res.status(200).json({ success: true, data: checkIns });
         } catch (error) {
             console.log("🚀 ~ BillDetailController ~ getAllCheckIns ~ error:", error);

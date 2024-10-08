@@ -54,6 +54,29 @@ import CheckOut from '../../database/models/checkout.model';
         }
     }
 
+    async getByIdCheckIn(checkInId: any) {
+        try {
+            const InDetail = await CheckIn.findByPk(checkInId);
+            if (!InDetail) return null;
+            return InDetail;
+        } catch (error) {
+            console.log("🚀 ~ BillDetailService ~ getBillDetailById ~ error:", error);
+            throw new Error('Failed to fetch bill detail');
+        }
+    }
+    
+
+    async getByIdCheckOuts(checkOutId: any) {
+        try {
+            const InDetail = await CheckOut.findByPk(checkOutId);
+            if (!InDetail) return null;
+            return InDetail;
+        } catch (error) {
+            console.log("🚀 ~ BillDetailService ~ getBillDetailById ~ error:", error);
+            throw new Error('Failed to fetch bill detail');
+        }
+    }
+
      async createCheckIn(checkInData: any) {
         try {
             const newCheckIn = await CheckIn.create(checkInData);
