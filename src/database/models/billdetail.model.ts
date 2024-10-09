@@ -32,16 +32,8 @@ export default class BillDetail extends Model {
     allowNull: false
   })
   amount!: number;
-  @ForeignKey(() => Outlet)
-  @Column({
-    type: DataType.INTEGER,
-    allowNull: false,
-  })
-  outletid!: number;
 
   @BelongsTo(() => Bill)
   bill !: Bill
 
-  @BelongsTo(() => Outlet)
-  outlet !: Outlet
 }

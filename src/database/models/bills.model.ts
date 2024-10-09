@@ -2,6 +2,7 @@ import { Table, Column, Model, ForeignKey, DataType, HasMany, BelongsTo } from '
 import {Guest} from './guest.model';
 import BillDetail from './billdetail.model';
 import { Outlet } from './outlet.model';
+import { Reservation } from './reservation.model';
 
 @Table({
   tableName: 'Bills',
@@ -21,6 +22,13 @@ export default class Bill extends Model {
     allowNull: false
   })
   guestId!: number;
+
+  @ForeignKey(() => Reservation)
+  @Column({
+    type: DataType.INTEGER,
+    allowNull: false,
+  })
+  reservationId!: number;
 
   @Column({
     type: DataType.FLOAT,

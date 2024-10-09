@@ -111,6 +111,8 @@ router.get('/guest/:guestId', RoomController.getGuestById);
 // Reservations
 router.post('/reservation', RoomController.createReservation);
 router.get('/reservations',passport.authenticate('jwt', { session: false }), RoomController.getReservations);
+router.get('/paymentStatus',passport.authenticate('jwt', { session: false }), RoomController.getPaymentStatus);
+router.get('/reservationTotal',passport.authenticate('jwt', { session: false }), RoomController.getTotalAmountForRes);
 router.put('/reservation/:reservationId', RoomController.updateReservation);
 router.delete('/reservation/:reservationId', RoomController.deleteReservation);
 router.get('/reservation/:reservationId', RoomController.reservationById);

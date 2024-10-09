@@ -1,9 +1,12 @@
+import moment from "moment";
 import { Guest } from "../../database/models/guest.model";
 import { Outlet } from "../../database/models/outlet.model";
 import { Reservation } from "../../database/models/reservation.model";
 import { Room } from "../../database/models/room.model";
 import { RoomRate } from "../../database/models/roomRate.model";
 import { RoomType } from "../../database/models/roomType.model";
+import Bill from "../../database/models/bills.model";
+import BillDetail from "../../database/models/billdetail.model";
 
 class RoomService {
     async createRoomType(data) { 
@@ -131,9 +134,37 @@ class RoomService {
             throw error;  
         }
     }
-    
-    async createReservation(data) {
+
+    async GetTotalAmountForReservation(data){
         try {
+
+            const RoomData = await Room.findOne({where : {roomId : data.roomId},attributes : ['roomId','roomTypeId']})
+            console.log("🚀 ~ RoomService ~ createReservation ~ RoomData:", RoomData.roomTypeId)
+
+            const RoomRateData  = await RoomRate.findOne({where : {roomTypeId : RoomData.roomTypeId},attributes : ['ratePerNight','rateId']})
+            console.log("🚀 ~ RoomService ~ createReservation ~ RoomRateData:", RoomRateData.ratePerNight)
+            const fromDate = moment(data.checkInDate)
+            console.log("🚀 ~ RoomService ~ createReservation ~ fromDate:", fromDate)
+            const toDate = moment(data.checkOutDate)
+            console.log("🚀 ~ RoomService ~ createReservation ~ toDate:", toDate)
+            const TotalNumberOfDays = toDate.diff(fromDate,'days')
+            console.log("🚀 ~ RoomService ~ GetTotalAmountForReservation ~ TotalNumberOfDays:", TotalNumberOfDays)
+
+            const TotalAmount = RoomRateData.ratePerNight * TotalNumberOfDays
+            console.log("🚀 ~ RoomService ~ createReservation ~ TotalAmount:", TotalAmount)
+            console.log("🚀 ~ RoomService ~ createReservation ~ TotalNumberOfDays:", TotalNumberOfDays)
+
+            return TotalAmount;
+        } catch (error) {
+            console.log("🚀 ~ ReservationController ~ createReservation ~ error:", error);
+            throw error;  
+        }
+    }
+    
+    async createReservation(data,billForm,billDetailForm) {
+        try {
+            console.log("🚀 ~ RoomService ~ createReservation ~ data:", data)
+
             const createdReservationData = await Reservation.create({
                 guestId: data.guestId,
                 roomId: data.roomId,
@@ -146,7 +177,35 @@ class RoomService {
                 specialRequests: data.specialRequests,
                 outletid: data.outletid
             });
-            return createdReservationData;
+
+            const createBill = await Bill.create({
+                guestId: billForm.guestId,              
+                reservationId: createdReservationData.reservationId,  
+                totalAmount: billForm.totalAmount,      
+                paymentMethod: billForm.paymentMethod,  
+                status: billForm.status,               
+                outletid: billForm.outletid             
+              });
+
+
+            if (createBill && createBill.billId) {
+                const createBillDetails = await BillDetail.create({
+                    billId: createBill.billId,           
+                    outletid: billDetailForm.outletid,    
+                    description: billDetailForm.description,
+                    amount: billDetailForm.amount        
+                });
+            
+                console.log("🚀 ~ RoomService ~ createReservation ~ createBillDetails:", createBillDetails);
+            }
+
+            let obj = {
+                reservation : createdReservationData,
+                Bill : createBill,
+                BillDetail : createBill
+            }
+
+            return obj;
         } catch (error) {
             console.log("🚀 ~ ReservationController ~ createReservation ~ error:", error);
             throw error;  
@@ -237,6 +296,54 @@ class RoomService {
         try {
             const reservations = await Reservation.findAll({ where: { outletid: data.outletId } });
             return reservations;
+        } catch (error) {
+            console.log("🚀 ~ ReservationService ~ getReservations ~ error:", error);
+            throw new Error('Failed to fetch reservations');
+        }
+    }
+
+    async getPaymentStatus(data,reservationId){
+        try {
+            // const reservations = await Reservation.findAll({ where: [{ reservationId: data.reservationId },{ outletid: data.outletId }] });
+            // console.log("🚀 ~ RoomService ~ getReservations ~ reservations:", reservations)
+            const isBillCleared = await Bill.findOne({where : [{ reservationId: reservationId },{ outletid: data.outletId },{status : 'unpaid'}]})
+            let totalOfBill = isBillCleared.totalAmount
+            // isBillCleared.map((ele : any) => {
+            //     totalOfBill += ele.totalAmount
+            // })
+            console.log("🚀 ~ RoomService ~ isBillCleared.map ~ totalOfBill:", totalOfBill)
+            const amountthatHasBeenPaid = await BillDetail.findAll({where : {billId : isBillCleared.billId}})
+            console.log("🚀 ~ RoomService ~ getReservations ~ amountthatHasBeenPaid:", amountthatHasBeenPaid)
+            let theAmountActuallyPaid = 0
+            amountthatHasBeenPaid.map((ele : any) => {
+                theAmountActuallyPaid += ele.amount
+            })
+            console.log("🚀 ~ RoomService ~ amountthatHasBeenPaid.map ~ theAmountActuallyPaid:", theAmountActuallyPaid)
+            console.log("🚀 ~ RoomService ~ getReservations ~ isBillCleared:", isBillCleared)
+            let obj = {}
+            if(totalOfBill != theAmountActuallyPaid){
+                obj['canHeCheckIn'] = false,
+                obj['AmountTobePaidMore'] = totalOfBill - theAmountActuallyPaid
+                obj['billId'] = isBillCleared.billId
+                obj['outletid'] = isBillCleared.outletid
+            }else if(totalOfBill == theAmountActuallyPaid){
+                obj['canHeCheckIn'] = true,
+                obj['AmountTobePaidMore'] = 0
+                const statusNeedTobeUpdated = await Reservation.update({paymentStatus : 'paid'},
+                    {where : {reservationId : reservationId}})
+                    if(statusNeedTobeUpdated){
+                        console.log("🚀 ~ RoomService ~ getPaymentStatus ~ statusNeedTobeUpdated:", statusNeedTobeUpdated)
+                    }else{
+                        console.log("🚀 ~ RoomService ~ getPaymentStatus :", statusNeedTobeUpdated)
+
+                    }
+                    
+            }else{
+                obj = {}
+            }
+            console.log("🚀 ~ RoomService ~ getPaymentStatus ~ obj:", obj)
+
+            return obj;
         } catch (error) {
             console.log("🚀 ~ ReservationService ~ getReservations ~ error:", error);
             throw new Error('Failed to fetch reservations');

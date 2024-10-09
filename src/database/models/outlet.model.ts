@@ -78,9 +78,6 @@ export class Outlet extends Model {
   @HasMany(() => Room)
   room!: Room[];
 
-  @HasMany(() => BillDetail)
-  billDetails!: BillDetail[];
-
   @HasMany(() => Bill)
   bill!: Bill[];
 

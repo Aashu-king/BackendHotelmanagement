@@ -177,10 +177,30 @@ class RoomController {
         }
     }
 
+    async getTotalAmountForRes(req: Request, res: Response) {
+        try {
+            const reservationData = req.query;
+            const createdReservation = await RoomService.GetTotalAmountForReservation(reservationData);
+            return res.status(201).json({
+                success: true,
+                message: 'Amount Got Sucessfully',
+                data: createdReservation,
+            });
+        } catch (error) {
+            console.log("🚀 ~ ReservationController ~ createReservation ~ error:", error);
+            return res.status(500).json({
+                success: false,
+                message: 'Failed to create reservation',
+                error: error.message,
+            });
+        }
+    }
+
     async createReservation(req: Request, res: Response) {
         try {
-            const reservationData = req.body;
-            const createdReservation = await RoomService.createReservation(reservationData);
+            const {reservationForm ,billForm ,billDetailForm} = req.body;
+            console.log("🚀 ~ RoomController ~ createReservation ~ req.body:", req.body)
+            const createdReservation = await RoomService.createReservation(reservationForm,billForm,billDetailForm);
             return res.status(201).json({
                 success: true,
                 message: 'Reservation created successfully',
@@ -307,8 +327,30 @@ class RoomController {
 
     async getReservations(req: Request, res: Response) {
         try {
-            const userDe = (req as DecodedRequest).user
+            const userDe = (req as DecodedRequest).user;
             const reservations = await RoomService.getReservations(userDe);
+    
+            return res.status(200).json({
+                success: true,
+                data: reservations,
+            });
+        } catch (error) {
+            console.error("Error in getReservations:", error.message);
+            return res.status(500).json({
+                success: false,
+                message: 'Failed to retrieve reservations',
+                error: error.message,
+            });
+        }
+    }
+    
+
+    async getPaymentStatus(req: Request, res: Response) {
+        try {
+            const userDe = (req as DecodedRequest).user
+            const {reservationId} = req.query
+            const reservations = await RoomService.getPaymentStatus(userDe,reservationId);
+            console.log("🚀 ~ RoomController ~ getPaymentStatus ~ reservations:", reservations)
             return res.status(200).json({
                 success: true,
                 data: reservations,
