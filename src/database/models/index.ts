@@ -24,6 +24,7 @@ import { Suppliers } from "./suppliers.model";
 import { SuppliesOrders } from "./suppliesorder.table";
 import { Supplies } from "./supply.model";
 import { ReservationTime } from "./reservationTime.model";
+import Cleaning from "./cleaning.model";
 
 const sequelize = new Sequelize({
   database : 'hotelmanagement',
@@ -32,7 +33,7 @@ const sequelize = new Sequelize({
   username : 'root',
   dialect : 'mysql',
    timezone: '+00:00',
-  models : [Hotel,Outlet,User,RolePermission,UserPermission,Module,ModuleType,BillDetail,Bill,CheckIn,CheckOut,Reservation,Room,RoomRate,RoomType,Guest,Page,Role,Inventory,Shift,Staff,Suppliers,SuppliesOrders,Supplies,ReservationTime]
+  models : [Hotel,Outlet,User,RolePermission,UserPermission,Module,ModuleType,BillDetail,Bill,CheckIn,CheckOut,Reservation,Room,RoomRate,RoomType,Guest,Page,Role,Inventory,Shift,Staff,Suppliers,SuppliesOrders,Supplies,ReservationTime,Cleaning]
 })
 
 export default sequelize

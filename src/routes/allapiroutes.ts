@@ -8,6 +8,7 @@ import RoomController from "../app/Rooms/Room.controller";
 import dropdownController from "../app/allDropdown/dropdown.controller";
 import bookingController from "../app/booking/booking.controller";
 import dashboardController from "../app/dashboardSpecial/dashboard.controller";
+import staffController from "../app/staff/staff.controller";
 
 const router = express.Router();
 
@@ -161,6 +162,7 @@ router.get('/bills', bookingController.getAllBills);
 //Dashboard
 router.get('/theDate',passport.authenticate('jwt', { session: false }), dashboardController.RoomAvailable);
 router.get('/theGuestData',passport.authenticate('jwt', { session: false }), dashboardController.GuestData);
+router.get('/theSchdueling',passport.authenticate('jwt', { session: false }), staffController.addStaffShift);
 
 
 

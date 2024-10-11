@@ -1,5 +1,6 @@
 import { Table, Column, Model, DataType, ForeignKey, BelongsTo } from 'sequelize-typescript';
 import { Staff } from './staff.model';
+import User from './user.model';
 
 @Table({
   tableName: 'Shift',
@@ -14,25 +15,27 @@ export class Shift extends Model {
   })
   shiftId!: number;
 
-  @ForeignKey(() => Staff)
+  @ForeignKey(() => User)
   @Column({
     type: DataType.INTEGER,
     allowNull: false
   })
-  staffId!: number;
+  userId!: number;
 
-  @BelongsTo(() => Staff)
-  staff!: Staff;
+  @BelongsTo(() => User)
+  user!: User;
 
   @Column({
     type: DataType.TIME,
-    allowNull: false
+    allowNull: false,
+    defaultValue: '08:00:00'  
   })
   startTime!: string;
-
+  
   @Column({
     type: DataType.TIME,
-    allowNull: false
+    allowNull: false,
+    defaultValue: '10:00:00'  
   })
   endTime!: string;
 

@@ -1,4 +1,6 @@
-import { Table, Column, Model, DataType } from 'sequelize-typescript';
+import { Table, Column, Model, DataType, ForeignKey, HasMany, BelongsTo } from 'sequelize-typescript';
+import Role from './role.model';
+import { Shift } from './shift.model';
 
 @Table({
   tableName: 'Staff',
@@ -38,11 +40,17 @@ export class Staff extends Model {
   })
   phone!: string;
 
+
+
+  @ForeignKey(() => Role)
   @Column({
-    type: DataType.ENUM('Manager', 'Housekeeping', 'Front Desk'),
+    type: DataType.INTEGER,
     allowNull: false
   })
-  role!: 'Manager' | 'Housekeeping' | 'Front Desk';
+  roleId!: number;
+
+  @BelongsTo(() => Role)
+  role!: Role;
 
   @Column({
     type: DataType.DATEONLY,
@@ -55,4 +63,5 @@ export class Staff extends Model {
     allowNull: false
   })
   salary!: number;
+
 }

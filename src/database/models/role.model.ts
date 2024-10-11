@@ -1,6 +1,7 @@
 import { Table, Column, Model, DataType, PrimaryKey, AutoIncrement, HasMany } from 'sequelize-typescript';
 import RolePermission from './role-permission.model';
 import User from './user.model';
+import { Staff } from './staff.model';
 
 @Table({
   tableName: 'roles',
@@ -26,6 +27,9 @@ class Role extends Model {
 
   @HasMany(() => User)
   user!: User[];
+
+  @HasMany(() => Staff)
+  staff!: Staff[];
 }
 
 export default Role;

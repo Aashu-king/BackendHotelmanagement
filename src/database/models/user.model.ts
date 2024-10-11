@@ -1,6 +1,8 @@
-import { Table, Column, Model, DataType, ForeignKey, BelongsTo, PrimaryKey, AutoIncrement } from 'sequelize-typescript';
+import { Table, Column, Model, DataType, ForeignKey, BelongsTo, PrimaryKey, AutoIncrement, HasMany } from 'sequelize-typescript';
 import Role from './role.model';
 import {Outlet} from './outlet.model';
+import { Shift } from './shift.model';
+import UserPermission from './user-permission.model';
 
 @Table({
   tableName: 'users',
@@ -101,6 +103,13 @@ class User extends Model {
 
   @BelongsTo(() => Outlet)
   outlet!: Outlet;
+
+
+  @HasMany(() => Shift)
+  shift!: Shift[]
+
+  @HasMany(() => UserPermission)
+  userpermission!: UserPermission[]
 }
 
 export default User;

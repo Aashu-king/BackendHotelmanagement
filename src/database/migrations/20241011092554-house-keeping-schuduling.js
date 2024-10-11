@@ -2,44 +2,41 @@
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable('Staff', {
-      staffId: {
+    await queryInterface.createTable('Cleaning', {
+      shiftId: {
         type: Sequelize.INTEGER,
         autoIncrement: true,
         primaryKey: true,
         allowNull: false
       },
-      firstName: {
-        type: Sequelize.STRING,
-        allowNull: false
-      },
-      lastName: {
-        type: Sequelize.STRING,
-        allowNull: false
-      },
-      email: {
-        type: Sequelize.STRING,
-        allowNull: false,
-        unique: true
-      },
-      phone: {
-        type: Sequelize.STRING,
-        allowNull: false
-      },
-      roleId: {
+      userId: {
         type: Sequelize.INTEGER,
         primaryKey: true,
         references: {
-          model: 'roles',
-          key: 'roleId',
+          model: 'users',
+          key: 'userId',
         },
+        onUpdate: 'CASCADE',
+        onDelete: 'CASCADE'
       },
-      hireDate: {
+      roomId: {
+        type: Sequelize.INTEGER,
+        primaryKey: true,
+        references: {
+          model: 'Rooms',
+          key: 'roomId',
+        },
+        onUpdate: 'CASCADE',
+        onDelete: 'CASCADE'
+      },
+      startTime: {
+        type: Sequelize.TIME
+      },
+      endTime: {
+        type: Sequelize.TIME
+      },
+      shiftDate: {
         type: Sequelize.DATEONLY,
-        allowNull: false
-      },
-      salary: {
-        type: Sequelize.DECIMAL(10, 2),
         allowNull: false
       },
       createdAt: {
@@ -56,6 +53,6 @@ module.exports = {
   },
 
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.dropTable('Staff');
+    await queryInterface.dropTable('Cleaning');
   }
 };

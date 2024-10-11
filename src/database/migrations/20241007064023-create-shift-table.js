@@ -9,12 +9,12 @@ module.exports = {
         primaryKey: true,
         allowNull: false
       },
-      staffId: {
+      userId: {
         type: Sequelize.INTEGER,
-        allowNull: false,
+        primaryKey: true,
         references: {
-          model: 'Staff', // Table name
-          key: 'staffId'
+          model: 'users',
+          key: 'userId',
         },
         onUpdate: 'CASCADE',
         onDelete: 'CASCADE'
