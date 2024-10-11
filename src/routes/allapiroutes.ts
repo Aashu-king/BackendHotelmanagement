@@ -160,6 +160,7 @@ router.get('/bills', bookingController.getAllBills);
 
 //Dashboard
 router.get('/theDate',passport.authenticate('jwt', { session: false }), dashboardController.RoomAvailable);
+router.get('/theGuestData',passport.authenticate('jwt', { session: false }), dashboardController.GuestData);
 
 
 

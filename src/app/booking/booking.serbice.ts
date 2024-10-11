@@ -44,7 +44,7 @@ import CheckOut from '../../database/models/checkout.model';
      async getBillDetailById(billDetailId: any) {
         try {
             const billDetail = await BillDetail.findByPk(billDetailId, {
-                include: [Bill, Outlet]
+                include: [Bill]
             });
             if (!billDetail) return null;
             return billDetail;

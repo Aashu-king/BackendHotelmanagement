@@ -331,7 +331,11 @@ class RoomService {
                 obj['AmountTobePaidMore'] = 0
                 const statusNeedTobeUpdated = await Reservation.update({paymentStatus : 'paid'},
                     {where : {reservationId : reservationId}})
-                    if(statusNeedTobeUpdated){
+                    const statusForBill = await Bill.update({status : 'paid'},
+                       { where : {reservationId : reservationId}}
+                    )
+
+                    if(statusNeedTobeUpdated || statusForBill){
                         console.log("🚀 ~ RoomService ~ getPaymentStatus ~ statusNeedTobeUpdated:", statusNeedTobeUpdated)
                     }else{
                         console.log("🚀 ~ RoomService ~ getPaymentStatus :", statusNeedTobeUpdated)

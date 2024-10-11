@@ -33,6 +33,24 @@ class DashboardController{
             });
         }
     }
+
+    async GuestData(req: Request, res: Response){
+        try {
+            const {firstName, lastName} = req.query
+            const theDataWeGot = await dashboardService.gusestData(firstName , lastName);
+            
+            if (theDataWeGot) {
+                return res.status(200).json(theDataWeGot);
+            } else {
+                return res.status(201).json({
+                    message: `No reservations found on the provided date: `,
+                });
+            }
+        } catch (error) {
+            console.log("🚀 ~ DashboardController ~ GuestData ~ error:", error)
+            
+        }
+    }
 }
 
 

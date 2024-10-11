@@ -5,6 +5,8 @@ import { Room } from "../../database/models/room.model";
 import { RoomType } from "../../database/models/roomType.model";
 import { Outlet } from "../../database/models/outlet.model";
 import { Guest } from "../../database/models/guest.model";
+import Bill from "../../database/models/bills.model";
+import BillDetail from "../../database/models/billdetail.model";
 
 class DashboardService{
     async RoomAvailable(theDate: any) {
@@ -65,6 +67,47 @@ class DashboardService{
             throw new Error('Error while checking room availability');  // Re-throw the error to be handled by the controller
         }
     }
+
+    async gusestData(firstName?: any, lastName?: any) {
+        try {
+            const options: any = {
+                include: [
+                    { model: Reservation },
+                    {
+                        model: Bill,
+                        include: [{ model: BillDetail }]
+                    }
+                ]
+            };
+            console.log("🚀 ~ DashboardService ~ gusestData ~ options:", options)
+    
+            if (firstName || lastName) {
+                options.where = {};
+    
+                if (firstName) {
+                    options.where.firstName = {
+                        [Op.like]: `%${firstName}%` 
+                    };
+                }
+    
+                if (lastName) {
+                    options.where.lastName = {
+                        [Op.like]: `%${lastName}%` 
+                    };
+                }
+            }
+    
+            // Fetch data using the options
+            const data = await Guest.findAll(options);
+            console.log("🚀 ~ DashboardService ~ gusestData ~ data:", data)
+            return data;
+        } catch (error) {
+            // Handle errors
+            console.error("Error fetching guest data:", error);
+            throw error; 
+        }
+    }
+    
 }
 
 
