@@ -9,6 +9,11 @@ import dropdownController from "../app/allDropdown/dropdown.controller";
 import bookingController from "../app/booking/booking.controller";
 import dashboardController from "../app/dashboardSpecial/dashboard.controller";
 import staffController from "../app/staff/staff.controller";
+import orderItemsController from "../app/restaurents/orderItems/orderItems.controller";
+import ordersController from "../app/restaurents/orders/orders.controller";
+import menuController from "../app/restaurents/menu/menu.controller";
+import paymentController from "../app/restaurents/payment/payment.controller";
+import tablesController from "../app/restaurents/tables/tables.controller";
 
 const router = express.Router();
 
@@ -163,6 +168,45 @@ router.get('/bills', bookingController.getAllBills);
 router.get('/theDate',passport.authenticate('jwt', { session: false }), dashboardController.RoomAvailable);
 router.get('/theGuestData',passport.authenticate('jwt', { session: false }), dashboardController.GuestData);
 router.get('/theSchdueling',passport.authenticate('jwt', { session: false }), staffController.addStaffShift);
+
+
+//restaurents related
+
+router.get('/tables', tablesController.getAllTables);
+router.get('/tables/:id', tablesController.getTableById);
+router.post('/tables', tablesController.createTable);
+router.put('/tables/:id', tablesController.updateTable);
+router.delete('/tables/:id', tablesController.deleteTable);
+
+router.get('/table/reservations', tablesController.getAllReservations);
+router.get('/table-reservations/:id', tablesController.getReservationById);
+router.post('/table-reservation', tablesController.createReservation);
+router.put('/table-reservations/:id', tablesController.updateReservation);
+router.delete('/table-reservations/:id', tablesController.deleteReservation);
+
+router.get('/order-items', orderItemsController.getAllOrderItems);
+router.get('/orderItems/:id', orderItemsController.getOrderItemById);
+router.post('/orderItems', orderItemsController.createOrderItem);
+router.put('/orderItems/:id', orderItemsController.updateOrderItem);
+router.delete('orderItems/:id', orderItemsController.deleteOrderItem);
+
+router.get('/reorders', ordersController.getAllOrders);
+router.get('/orders/:id', ordersController.getOrderById);
+router.post('/orders', ordersController.createOrder);
+router.put('/orders/:id', ordersController.updateOrder);
+router.delete('/orders/:id', ordersController.deleteOrder);
+
+router.get('/menu', menuController.getAllMenuItems);
+router.get('/menus/:id', menuController.getMenuItemById);
+router.post('/menus', menuController.createMenuItem);
+router.put('/menus/:id', menuController.updateMenuItem);
+router.delete('/menus/:id', menuController.deleteMenuItem);
+
+router.get('/payments', paymentController.getAllPayments);
+router.get('/payments/:id', paymentController.getPaymentById);
+router.post('/payments', paymentController.createPayment);
+router.put('/payments/:id', paymentController.updatePayment);
+router.delete('/payments/:id', paymentController.deletePayment);
 
 
 

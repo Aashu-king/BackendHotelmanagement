@@ -2,7 +2,7 @@ import { Outlet } from "../../database/models/outlet.model"
 
 
 class outletService{
-    async createoutlet(name: any,address : any,city : any,state : any,zipCode : any ,phoneNumber : any,email : any,hotelid : any){
+    async createoutlet(name: any,address : any,city : any,state : any,zipCode : any ,phoneNumber : any,email : any,hotelId : any){
         try {
           const outletDataInsert =   await Outlet.create({
                 name : name,
@@ -12,7 +12,7 @@ class outletService{
                 zipCode : zipCode,
                 phoneNumber : phoneNumber,
                 email : email,
-                hotelId : hotelid
+                hotelId : hotelId
             })
 
             return outletDataInsert

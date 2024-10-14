@@ -5,8 +5,8 @@ import { Outlet } from "../../database/models/outlet.model";
 class outletController{
     async createoutlet(req : Request,res : Response){
         try {
-            const {name ,address,city,state,zipCode,phoneNumber,email,hotelid} = req.body
-            const createdoutlet = await outletService.createoutlet(name ,address,city,state,zipCode,phoneNumber,email,hotelid);
+            const {name ,address,city,state,zipCode,phoneNumber,email,hotelId} = req.body
+            const createdoutlet = await outletService.createoutlet(name ,address,city,state,zipCode,phoneNumber,email,hotelId);
             res.status(200).json(createdoutlet)
         } catch (error) {
             console.log("🚀 ~ outletService ~ createoutlet ~ error:", error)
