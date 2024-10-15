@@ -207,6 +207,8 @@ router.get('/payments/:id', paymentController.getPaymentById);
 router.post('/payments', paymentController.createPayment);
 router.put('/payments/:id', paymentController.updatePayment);
 router.delete('/payments/:id', paymentController.deletePayment);
+router.get('/graphData', dashboardController.graphData);
+router.get('/outletGraphData', dashboardController.outletwiseCollectionData);
 
 
 
