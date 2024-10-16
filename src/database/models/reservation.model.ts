@@ -4,6 +4,7 @@ import { Room } from './room.model'
 import { Outlet } from './outlet.model';
 import User from './user.model';
 import { ReservationTime } from './reservationTime.model';
+import Bill from './bills.model';
 @Table({
   tableName: 'Reservations',
   timestamps: true,
@@ -78,6 +79,10 @@ export class Reservation extends Model {
     allowNull: false,
   })
   outletid!: number;
+
+  
+  @HasMany(() => Bill)
+  bill!: Bill;
 
   @BelongsTo(() => Room)
   room!: Room;

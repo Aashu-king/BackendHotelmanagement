@@ -30,6 +30,10 @@ export default class Bill extends Model {
   })
   reservationId!: number;
 
+  
+  @BelongsTo(() => Reservation)
+  reservation !: Reservation
+
   @Column({
     type: DataType.FLOAT,
     allowNull: false
@@ -57,6 +61,8 @@ export default class Bill extends Model {
 
   @HasMany(() => BillDetail)
   billDetails!: BillDetail[];
+
+  
 
   @BelongsTo(() => Guest)
   guest !: Guest

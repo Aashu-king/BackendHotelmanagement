@@ -8,6 +8,7 @@ import { Payments } from "../../database/models/payment.model";
 import User from "../../database/models/user.model";
 import Bill from "../../database/models/bills.model";
 import { Orders } from "../../database/models/orders.models";
+import { Reservation } from "../../database/models/reservation.model";
 
 class DashboardController {
     async RoomAvailable(req: Request, res: Response) {
@@ -205,14 +206,15 @@ class DashboardController {
                 raw: true
             });
             //  include: [{ model: Payments, attributes: [[sequelize.fn('SUM', sequelize.col('amount')), 'paidamount']] }],
-            const paymentData = await Orders.findAll({ 
+            const paymentData = await Orders.findAll({
                 include: [{ model: Payments, attributes: [[sequelize.fn('SUM', sequelize.col('amount')), 'paidamount']] }],
-                 attributes: ['outletid',], group: ['Orders.outletid'], raw: true });
+                attributes: ['outletid',], group: ['Orders.outletid'], raw: true
+            });
             console.log("🚀 ~ DashboardController ~ outletwiseCollectionData ~ paymentData:", paymentData)
 
             const outletMap = new Map<number, number>();
-            
-            billData.forEach((bill : any) => {
+
+            billData.forEach((bill: any) => {
                 const outletid = bill.outletid;
                 console.log("🚀 ~ DashboardController ~ outletwiseCollectionData ~ bill:", bill)
                 const amount = parseFloat(bill.paidamount || '0');
@@ -253,11 +255,42 @@ class DashboardController {
                 data: data,
                 rawData: processedData
             });
-          
+
 
         } catch (error) {
             console.error("Error in outletwiseCollectionData:", error);
             res.status(500).json({ error: "Internal server error" });
+        }
+    }
+    async MakeAReport() {
+        try {
+            const dataForReport = await Reservation.findAll({
+                include: [
+                    {
+                        model: Bill, 
+                        as: 'bill', 
+                        attributes: [] 
+                    }
+                ],
+                attributes: [
+                    'paymentStatus',
+                    [sequelize.fn('COUNT', sequelize.col('Reservation.reservationId')), 'reservationCount'],
+                    [sequelize.fn('SUM', sequelize.col('bill.totalAmount')), 'totalRevenue'] // SUM for bill's totalAmount
+                ],
+               
+                group: ['Reservation.paymentStatus'], 
+            });
+            
+    
+            console.log("🚀 ~ DashboardController ~ MakeAReport ~ dataForReport:", dataForReport);
+    
+            let FullBillPaid = [];
+            for (let index = 0; index < dataForReport.length; index++) {
+                const element = dataForReport[index];
+                console.log("🚀 ~ DashboardController ~ MakeAReport ~ element:", element);
+            }
+        } catch (error) {
+            console.log("🚀 ~ DashboardController ~ MakeAReport ~ error:", error);
         }
     }
 }
