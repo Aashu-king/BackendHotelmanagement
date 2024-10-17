@@ -137,7 +137,15 @@ class DashboardController {
                 const newUsers = users.filter(user => moment(user.createdAt).isSameOrBefore(monthEnd));
 
                 cumulativeUserCount += newUsers.length;
-                cumulativeSalary += newUsers.reduce((sum, user: any) => sum + user.dataValues.salary, 0);
+                cumulativeSalary = newUsers.reduce((sum, user: any) => {
+                    console.log(`Current sum: ${sum}, Salary: ${user.dataValues.salary}`);
+                    return sum + user.dataValues.salary; 
+                }, 0);
+                const total = 60000 + 100000
+                console.log("🚀 ~ DashboardController ~ graphData ~ total:", total)
+                console.log("🚀 ~ DashboardController ~ cumulativeSalary+=newUsers.reduce ~ cumulativeSalary:", cumulativeSalary)
+                
+                // console.log("🚀 ~ DashboardController ~ graphData ~ newUsers:", newUsers)
                 let justChecking = newUsers.reduce((sum, user: any) => {
                     console.log(`User Salary: ${user.dataValues.salary}`);
                     return sum + user.salary;
@@ -145,6 +153,7 @@ class DashboardController {
                 const monthData = monthlyData.get(month);
                 monthData.userCount = cumulativeUserCount;
                 monthData.userSalary = cumulativeSalary;
+                // console.log("🚀 ~ DashboardController ~ graphData ~ userSalary:", monthData.userSalary)
             });
 
             const formattedData = Array.from(monthlyData, ([month, data]) => {
