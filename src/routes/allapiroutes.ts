@@ -14,6 +14,7 @@ import ordersController from "../app/restaurents/orders/orders.controller";
 import menuController from "../app/restaurents/menu/menu.controller";
 import paymentController from "../app/restaurents/payment/payment.controller";
 import tablesController from "../app/restaurents/tables/tables.controller";
+import upload from './../common/multerCinfig'
 
 const router = express.Router();
 
@@ -23,6 +24,9 @@ router.get('/get-hotel',hotelController.getHotels)
 router.get('/hotel/:id', hotelController.getHotelById);
 router.delete('/hotel/:id', hotelController.deleteHotel);
 router.put('/hotel/:id', hotelController.updateHotel);
+router.post('/upload', upload.array('images', 10), hotelController.uploadHotelImages);
+router.post('/uploadOutlet', upload.array('images', 10), hotelController.uploadOutletImages);
+router.post('/uploadRoom', upload.array('images', 10), hotelController.uploadRoomImages);
 
 
 //outlet
@@ -211,5 +215,7 @@ router.get('/graphData', dashboardController.graphData);
 router.get('/outletGraphData', dashboardController.outletwiseCollectionData);
 
 
+//user
+router.get('/userrooms', RoomController.getRoomDetailsUser);
 
 export default router

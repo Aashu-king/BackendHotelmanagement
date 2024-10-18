@@ -2,6 +2,7 @@ import { Table, Column, Model, DataType, ForeignKey, BelongsTo, HasMany } from '
 import { RoomType } from './roomType.model';
 import { Outlet } from './outlet.model';
 import { Reservation } from './reservation.model';
+import RoomImage from './roomImages.model';
 
 @Table({
   tableName: 'Rooms',
@@ -49,6 +50,9 @@ export class Room extends Model {
 
   @HasMany(() => Reservation)
   reservation !: Reservation[];
+
+  @HasMany(() => RoomImage)
+  roomImage !: RoomImage[];
 
   @BelongsTo(() => Outlet)
   outlet!: Outlet;

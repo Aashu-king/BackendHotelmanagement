@@ -7,6 +7,7 @@ import { RoomRate } from "../../database/models/roomRate.model";
 import { RoomType } from "../../database/models/roomType.model";
 import Bill from "../../database/models/bills.model";
 import BillDetail from "../../database/models/billdetail.model";
+import RoomImage from "../../database/models/roomImages.model";
 
 class RoomService {
     async createRoomType(data) { 
@@ -195,6 +196,7 @@ class RoomService {
                     description: billDetailForm.description,
                     amount: billDetailForm.amount        
                 });
+                console.log("🚀 ~ RoomService ~ createReservation ~ createBillDetails:", createBillDetails)
             
                 console.log("🚀 ~ RoomService ~ createReservation ~ createBillDetails:", createBillDetails);
             }
@@ -242,6 +244,15 @@ class RoomService {
         }
     }
 
+    async getRoomDetailsUser() {
+        try {
+            const rooms = await Room.findAll({include : [{model : Outlet,attributes : ['outletId','name']},{model : RoomType,attributes : ['roomTypeId','typeName']},{model : RoomImage}]});
+            return rooms;
+        } catch (error) {
+            console.log("🚀 ~ RoomService ~ getRoomDetails ~ error:", error);
+            throw new Error('Failed to fetch room details');
+        }
+    }
     async getRoomRates(data) {
         try {
             const roomRates = await RoomRate.findAll({ where: { outletid: data.outletId } });

@@ -234,6 +234,24 @@ class RoomController {
         }
     }
 
+    async getRoomDetailsUser(req: Request, res: Response) {
+        try {
+       
+            const rooms = await RoomService.getRoomDetailsUser();
+            return res.status(200).json({
+                success: true,
+                data: rooms,
+            });
+        } catch (error) {
+            console.log("🚀 ~ RoomController ~ getRoomDetails ~ error:", error);
+            return res.status(500).json({
+                success: false,
+                message: 'Failed to retrieve room details',
+                error: error.message,
+            });
+        }
+    }
+
     async getRoomRates(req: Request, res: Response) {
         try {
             const userDe = (req as DecodedRequest).user
