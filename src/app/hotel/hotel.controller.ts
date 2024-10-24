@@ -126,7 +126,7 @@ class hotelController{
     }
     async getHotels(req : Request,res : Response){
         try {
-            const getData = await Hotel.findAll({attributes : {exclude : ['createdAt','deletedAt','updatedAt']}})
+            const getData = await Hotel.findAll({include : [{model : HotelImage}], attributes : {exclude : ['createdAt','deletedAt','updatedAt']}})
             console.log("🚀 ~ hotelController ~ getHotels ~ getData:", getData)
             if(getData){
                 res.status(200).json(getData)

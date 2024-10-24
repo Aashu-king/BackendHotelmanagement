@@ -255,6 +255,7 @@ class RoomController {
     async getRoomRates(req: Request, res: Response) {
         try {
             const userDe = (req as DecodedRequest).user
+            console.log("🚀 ~ RoomController ~ getRoomRates ~ userDe:", userDe)
             const roomRates = await RoomService.getRoomRates(userDe);
             return res.status(200).json({
                 success: true,

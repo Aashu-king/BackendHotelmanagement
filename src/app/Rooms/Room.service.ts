@@ -236,7 +236,7 @@ class RoomService {
     
     async getRoomDetails(user) {
         try {
-            const rooms = await Room.findAll({ where: { outletid: user.outletId } ,include : [{model : Outlet,attributes : ['outletId','name']},{model : RoomType,attributes : ['roomTypeId','typeName']}]});
+            const rooms = await Room.findAll({ where: { outletid: user.outletId } ,include : [{model : Outlet,attributes : ['outletId','name']},{model : RoomType,attributes : ['roomTypeId','typeName']},{model : RoomImage}]});
             return rooms;
         } catch (error) {
             console.log("🚀 ~ RoomService ~ getRoomDetails ~ error:", error);

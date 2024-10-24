@@ -1,6 +1,7 @@
 import { Request, Response } from "express"
 import outletService from "./outlet.service"
 import { Outlet } from "../../database/models/outlet.model";
+import OutletImage from "../../database/models/outletImage.model";
 
 class outletController{
     async createoutlet(req : Request,res : Response){
@@ -31,7 +32,7 @@ class outletController{
     }
     async getoutlets(req : Request,res : Response){
         try {
-            const getData = await Outlet.findAll({attributes : {exclude : ['createdAt','deletedAt','updatedAt']}})
+            const getData = await Outlet.findAll({include : [{model : OutletImage}],attributes : {exclude : ['createdAt','deletedAt','updatedAt']}})
             if(getData){
                 res.status(200).json(getData)
             }else{

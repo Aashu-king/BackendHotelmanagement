@@ -1,4 +1,5 @@
-import { Table, Column, Model, DataType, AutoIncrement, PrimaryKey } from 'sequelize-typescript';
+import { Table, Column, Model, DataType, AutoIncrement, PrimaryKey, HasMany } from 'sequelize-typescript';
+import HotelImage from './hotelImages.model';
 
 @Table({
   tableName: 'hotels',
@@ -80,6 +81,9 @@ class Hotel extends Model {
     allowNull: true,
   })
   website?: string;
+
+  @HasMany(() => HotelImage)
+  images!: HotelImage[];
 }
 
 export default Hotel;

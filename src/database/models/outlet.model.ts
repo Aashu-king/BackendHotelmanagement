@@ -5,6 +5,8 @@ import { Room } from './room.model';
 import BillDetail from './billdetail.model';
 import Bill from './bills.model';
 import { Reservation } from './reservation.model';
+import HotelImage from './hotelImages.model';
+import OutletImage from './outletImage.model';
 
 @Table({
   tableName: 'outlets',
@@ -83,4 +85,6 @@ export class Outlet extends Model {
 
   @HasMany(() => Reservation)
   reservation!: Reservation[];
+  @HasMany(() => OutletImage)
+  images!: OutletImage[];
 }

@@ -52,7 +52,7 @@ export class Room extends Model {
   reservation !: Reservation[];
 
   @HasMany(() => RoomImage)
-  roomImage !: RoomImage[];
+  images !: RoomImage[];
 
   @BelongsTo(() => Outlet)
   outlet!: Outlet;
